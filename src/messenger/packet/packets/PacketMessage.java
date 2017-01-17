@@ -21,7 +21,13 @@ public class PacketMessage extends Packet {
 
 	@Override
 	public void writeContent(DataOutputStream dataOutputStream) {
-		
+		try{
+			dataOutputStream.writeByte(packetMessageType.getTypeCode());
+			
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
