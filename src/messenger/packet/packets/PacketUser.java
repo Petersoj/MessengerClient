@@ -2,6 +2,7 @@ package messenger.packet.packets;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import messenger.packet.Packet;
 
@@ -13,20 +14,17 @@ public class PacketUser extends Packet {
 	}
 
 	@Override
-	public void writeContent(DataOutputStream dataOutputStream) {
+	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
 		
 	}
 
 	@Override
-	public void readContent(DataInputStream dataInputStream) {
+	public void readContent(DataInputStream dataInputStream) throws IOException{
 		
 	}
 	
 	
-	
-	
 	public enum PacketUserType {
-		USERNAME, COLOR, IMAGE_ICON
+		USERNAME, COLOR, IMAGE_ICON;
 	}
-
 }

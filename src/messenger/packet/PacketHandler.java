@@ -10,5 +10,11 @@ public class PacketHandler {
 		this.messengerController = messengerController;
 	}
 	
+	
+
+	public MessengerController getMessengerController() {
+		return messengerController;
+	}
+	
 
 }

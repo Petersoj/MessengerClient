@@ -2,10 +2,14 @@ package messenger.view;
 
 import javax.swing.JFrame;
 
+import messenger.controller.MessengerController;
+
 public class MessengerFrame extends JFrame {
 	
-	public MessengerFrame(){
-		
+	private MessengerController messengerController;
+	
+	public MessengerFrame(MessengerController messengerController){
+		this.messengerController = messengerController;
 		this.setupFrame();
 	}
 	
@@ -13,4 +17,9 @@ public class MessengerFrame extends JFrame {
 		
 	}
 
+	
+	public MessengerController getMessengerController(){
+		return messengerController;
+	}
+	
 }

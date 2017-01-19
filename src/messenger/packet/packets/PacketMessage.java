@@ -12,7 +12,6 @@ public class PacketMessage extends Packet {
 	
 	private int userID;
 	private String message;
-	
 
 	public PacketMessage(PacketMessageType packetMessageType) {
 		super(PacketType.MESSAGE);
@@ -20,39 +19,29 @@ public class PacketMessage extends Packet {
 	}
 
 	@Override
-	public void writeContent(DataOutputStream dataOutputStream) {
-		try{
-			dataOutputStream.writeByte(packetMessageType.getTypeCode());
-			
-			
-		}catch(IOException e) {
-			e.printStackTrace();
+	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
+		dataOutputStream.writeUTF(packetMessageType.toString());
+		switch(packetMessageType){
+			case MESSAGE:
+				dataOutputStream.writeUTF(message);
+				break;
+			default:
+				break;
 		}
 	}
 
 	@Override
-	public void readContent(DataInputStream dataInputStream) {
-		try{
-			this.packetMessageType = PacketMessageType.getTypeFromCode(dataInputStream.readByte());
-			switch(packetMessageType){
-				case MESSAGE:
-					this.userID = dataInputStream.readInt();
-					this.message = dataInputStream.readUTF();
-					break;
-				default:
-					break;
-			}
-		}catch(IOException e) {
-			e.printStackTrace();
+	public void readContent(DataInputStream dataInputStream) throws IOException{
+		this.packetMessageType = PacketMessageType.valueOf(dataInputStream.readUTF());
+		this.userID = dataInputStream.readInt();
+		switch(packetMessageType){
+			case MESSAGE:
+				this.message = dataInputStream.readUTF();
+				break;
+			default:
+				break;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	public PacketMessageType getPacketMessageType() {
@@ -75,34 +64,7 @@ public class PacketMessage extends Packet {
 		this.message = message;
 	}
 
-
-
-
-
-
-
-
-
 	public enum PacketMessageType {
-		MESSAGE(0), FILE_NOTIFIER(1), IMAGE_NOTIFIER(2);
-		
-		private int type;
-		
-		private PacketMessageType(int typeCode){
-			type = typeCode;
-		}
-		
-		public int getTypeCode(){
-			return type;
-		}
-		
-		public static PacketMessageType getTypeFromCode(int typeCode){
-			for(PacketMessageType type : values()){
-				if(type.getTypeCode() == typeCode){
-					return type;
-				}
-			}
-			return null;
-		}
+		MESSAGE, FILE_NOTIFIER, IMAGE_NOTIFIER;
 	}
 }

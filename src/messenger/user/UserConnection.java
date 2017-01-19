@@ -16,7 +16,6 @@ public class UserConnection extends Thread {
 		this.user = user;
 		
 		this.socket = socket;
-		
 		this.dataOutputStream = new DataOutputStream(dataOutputStream);
 		this.dataInputStream = new DataInputStream(dataInputStream);
 	}
