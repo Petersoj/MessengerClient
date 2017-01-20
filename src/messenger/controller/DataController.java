@@ -1,11 +1,18 @@
 package messenger.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import javax.imageio.ImageIO;
+
+import messenger.user.UserColor;
+import messenger.util.Utils;
 
 public class DataController {
 
@@ -16,12 +23,19 @@ public class DataController {
 	private String dataFilePath;
 	private String ipAddress;
 	private int port;
+	private String userName;
+	private UserColor userColor;
+	private BufferedImage userIcon;
+	
+	private BufferedImage messengerIcon;
 
 	public DataController(MessengerController messengerController) {
 		this.messengerController = messengerController;
+		this.errorOccured = false; // I know it is false by default, but just want to make sure lol.
 
 		this.setupDataFolder();
 		this.parseDataIntoMembers();
+		this.loadOtherAssets();
 	}
 	
 	private void setupDataFolder(){
@@ -35,31 +49,67 @@ public class DataController {
 					this.copyDefaultsToDataDirectory();
 				}
 			}else{
-				messengerController.getDebug().presentError(e.getMessage());
+				this.errorOccured = true;
+				messengerController.getDebug().presentError("Setting up Data Folder", e.getMessage());
 			}
 		}
 	}
 	
-	private void parseDataIntoMembers(){
-		String textDataString = "";
+	private void parseDataIntoMembers(){ // I know I should use some markup language with its respective parser, but nah.
 		try{
-			byte[] textData = Files.readAllBytes(Paths.get(dataFilePath + "/textData.txt"));
-			
-		}catch(IOException e) {
-			messengerController.getDebug().presentError(e.getMessage());
+			String textData = new String(Files.readAllBytes(Paths.get(dataFilePath + "/textData.txt"))); // Text Data
+			String[] textDatas = textData.split("-");
+			for(String data : textDatas){
+				String[] splitData = data.split(":");
+				String key = splitData[0];
+				String value = splitData[1];
+				if(key.equalsIgnoreCase("ip")){
+					this.ipAddress = value;
+				}else if(key.equalsIgnoreCase("port")){
+					this.port = Integer.valueOf(value);
+				}else if(key.equalsIgnoreCase("name")){
+					this.userName = value;
+				}else if(key.equalsIgnoreCase("color")){
+					this.userColor = UserColor.valueOf(value);
+				}
+			}
+			this.userIcon = ImageIO.read(new File(dataFilePath + "/userIcon.png"));
+		}catch(Exception e) {
+			this.errorOccured = true;
+			messengerController.getDebug().presentError("Parsing Data", e.getMessage());
+		}
+	}
+	
+	private void loadOtherAssets(){
+		try {
+			this.messengerIcon = Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png")), 100, 100);
+		} catch (Exception e) {
+			this.errorOccured = true;
+			messengerController.getDebug().presentError("Load Assets", e.getMessage());
 		}
 	}
 	
 	public void saveData(){
-		
+		try{
+			FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
+			String data = "ip:" + this.ipAddress + "-port:" + String.valueOf(this.port) + "-name:" + this.userName + "-color:" + this.userColor.toString();
+			fileWriter.write(data);
+			fileWriter.close();
+			
+			ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
+		}catch(Exception e) {
+			this.errorOccured = true;
+			messengerController.getDebug().presentError("Load Assets", e.getMessage());
+		}
 	}
 	
 	private void copyDefaultsToDataDirectory(){
 		try{
 			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/textData.txt"), Paths.get(dataFilePath + "/textData.txt"), StandardCopyOption.REPLACE_EXISTING);
-			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/defaultUser.png"), Paths.get(dataFilePath + "/defaultUser.png"), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/userIcon.png"), Paths.get(dataFilePath + "/userIcon.png"), StandardCopyOption.REPLACE_EXISTING);
 		}catch(Exception e) {
-			messengerController.getDebug().presentError(e.getMessage());
+			this.errorOccured = true;
+			messengerController.getDebug().presentError("Copying Defaults", e.getMessage());
 		}
 	}
 	
@@ -94,5 +144,33 @@ public class DataController {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public UserColor getUserColor() {
+		return userColor;
+	}
+
+	public void setUserColor(UserColor userColor) {
+		this.userColor = userColor;
+	}
+
+	public BufferedImage getUserIcon() {
+		return userIcon;
+	}
+
+	public void setUserIcon(BufferedImage userIcon) {
+		this.userIcon = userIcon;
+	}
+
+	public BufferedImage getMessengerIcon(){
+		return messengerIcon;
 	}
 }
