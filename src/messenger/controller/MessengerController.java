@@ -14,8 +14,12 @@ public class MessengerController {
 	public MessengerController(){
 		this.debug = new Debug(this);
 		this.dataController = new DataController(this);
-		this.user = new User(this);
-		this.messengerFrame = new MessengerFrame(this);
+		if(!this.dataController.errorOccured()){
+			this.user = new User(this);
+			this.messengerFrame = new MessengerFrame(this);	
+		}else{ // problem loading files!
+			this.debug.presentError("Closing program!");
+		}
 	}
 	
 	public void setupMessenger(){
