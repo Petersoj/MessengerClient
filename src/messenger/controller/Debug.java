@@ -2,6 +2,7 @@ package messenger.controller;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class Debug {
 
@@ -12,12 +13,17 @@ public class Debug {
 	}
 
 	public void presentError(String title, String message){
-		if(messengerController.getDataController().getMessengerIcon() == null){
-			JOptionPane.showMessageDialog(messengerController.getMessengerFrame(), message, title, JOptionPane.CLOSED_OPTION);
-		}else{
-			JOptionPane.showMessageDialog(messengerController.getMessengerFrame(), message, title, JOptionPane.CLOSED_OPTION,
-					new ImageIcon(messengerController.getDataController().getMessengerIcon()));
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if(messengerController.getDataController().getMessengerIcon() == null){
+					JOptionPane.showMessageDialog(messengerController.getMessengerFrame(), message, title, JOptionPane.CLOSED_OPTION);
+				}else{
+					JOptionPane.showMessageDialog(messengerController.getMessengerFrame(), message, title, JOptionPane.CLOSED_OPTION,
+							new ImageIcon(messengerController.getDataController().getMessengerIcon()));
+				}
+			}
+		});
 	}
 
 }

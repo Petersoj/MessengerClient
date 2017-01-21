@@ -12,13 +12,13 @@ import java.nio.file.StandardCopyOption;
 import javax.imageio.ImageIO;
 
 import messenger.user.UserColor;
-import messenger.util.Utils;
 
 public class DataController {
 
 	private MessengerController messengerController;
 	
 	private boolean errorOccured;
+	private boolean isOSX;
 	
 	private String dataFilePath;
 	private String ipAddress;
@@ -82,7 +82,7 @@ public class DataController {
 	
 	private void loadOtherAssets(){
 		try {
-			this.messengerIcon = Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png")), 100, 100);
+			this.messengerIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png"));
 		} catch (Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e.getMessage());
@@ -119,6 +119,7 @@ public class DataController {
 		if (os.contains("WIN")) {
 			return System.getenv("APPDATA");
 		}else if(os.contains("MAC")) {
+			this.isOSX = true;
 			return System.getProperty("user.home") + "/Library/Application Support";
 		}else if(os.contains("NUX")) {
 			return System.getProperty("user.home");
@@ -129,10 +130,15 @@ public class DataController {
 	public boolean errorOccured() {
 		return errorOccured;
 	}
+	
+	public boolean isOSX() {
+		return isOSX;
+	}
 
 	public String getIpAddress() {
 		return ipAddress;
 	}
+	
 
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;

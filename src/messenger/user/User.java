@@ -17,7 +17,7 @@ public class User {
 	}
 	
 	public void connectToServer(){
-		
+		this.userConnection = new UserConnection(this);
 	}
 
 	

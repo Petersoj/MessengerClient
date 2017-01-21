@@ -20,26 +20,20 @@ public class PacketMessage extends Packet {
 
 	@Override
 	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
+		super.writeContent(dataOutputStream);
 		dataOutputStream.writeUTF(packetMessageType.toString());
-		switch(packetMessageType){
-			case MESSAGE:
-				dataOutputStream.writeUTF(message);
-				break;
-			default:
-				break;
+		if(packetMessageType == PacketMessageType.MESSAGE){
+			dataOutputStream.writeUTF(message);
 		}
 	}
 
 	@Override
 	public void readContent(DataInputStream dataInputStream) throws IOException{
+		super.readContent(dataInputStream);
 		this.packetMessageType = PacketMessageType.valueOf(dataInputStream.readUTF());
 		this.userID = dataInputStream.readInt();
-		switch(packetMessageType){
-			case MESSAGE:
-				this.message = dataInputStream.readUTF();
-				break;
-			default:
-				break;
+		if(packetMessageType == PacketMessageType.MESSAGE){
+			this.message = dataInputStream.readUTF();
 		}
 	}
 	
