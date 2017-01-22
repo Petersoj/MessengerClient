@@ -18,13 +18,14 @@ public class MessengerFrame extends JFrame {
 	}
 	
 	private void setupFrame(){
-		this.setContentPane(messengerPanel);
-		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		this.setTitle("Messenger");
 		this.setSize(800, 600);
 		this.setLocationRelativeTo(null); // Centers the frame
 		this.setIconImage(messengerController.getDataController().getMessengerIcon());
+		
+		this.setContentPane(messengerPanel); // after sizing so validate doesn't get called last seconds.
 		
 		this.setVisible(true);
 	}
