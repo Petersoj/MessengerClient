@@ -1,7 +1,7 @@
 package messenger.view;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.SpringLayout;
 
 import messenger.view.messagepanel.MessagePanel;
 import messenger.view.typepanel.TypePanel;
@@ -10,7 +10,7 @@ public class MessengerPanel extends JPanel {
 	
 	private MessengerFrame messengerFrame;
 	
-	private BoxLayout boxLayout;
+	private SpringLayout springLayout;
 	
 	private MessagePanel messagePanel;
 	private TypePanel typePanel;
@@ -18,25 +18,33 @@ public class MessengerPanel extends JPanel {
 	public MessengerPanel(MessengerFrame messengerFrame){
 		super();
 		this.messengerFrame = messengerFrame;
-		this.boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		this.springLayout = new SpringLayout();
 		this.messagePanel = new MessagePanel(this);
 		this.typePanel = new TypePanel(this);
 		
 		this.setupPanel();
+		this.setupLayout();
 	}
 	
-	public void setupPanel(){
-		this.setLayout(boxLayout);
-		this.add(messagePanel);
+	private void setupPanel(){
+		this.setLayout(springLayout);
+		//this.add(messagePanel);
 		this.add(typePanel);
+	}
+	
+	private void setupLayout(){
+		springLayout.putConstraint(SpringLayout.NORTH, typePanel, -46, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, typePanel, 0, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.EAST, typePanel, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, typePanel, 0, SpringLayout.WEST, this);
 	}
 
 	public MessengerFrame getMessengerFrame() {
 		return messengerFrame;
 	}
 
-	public BoxLayout getBoxLayout() {
-		return boxLayout;
+	public SpringLayout getSpringLayout() {
+		return springLayout;
 	}
 
 	public MessagePanel getMessagePanel() {

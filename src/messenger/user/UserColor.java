@@ -9,17 +9,10 @@ public enum UserColor {
 	private Color color;
 	
 	private UserColor(int r, int g, int b){
-		color = new Color(r, g, b, 130);
+		color = new Color(r, g, b);
 	}
 	
 	public Color getColor(){
 		return color;
-	}
-	
-	public Color getSofterColor(){
-		int r = color.getRed() - 50;
-		int g = color.getGreen() - 50;
-		int b = color.getBlue() - 50;
-		return new Color((r < 0 ? 0 : r), (g < 0 ? 0 : g), (b < 0 ? 0 : b));
 	}
 }

@@ -1,5 +1,6 @@
 package messenger.controller;
 
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,6 +28,7 @@ public class DataController {
 	private UserColor userColor;
 	private BufferedImage userIcon;
 	
+	private Font verdanaFont;
 	private BufferedImage messengerIcon;
 
 	public DataController(MessengerController messengerController) {
@@ -87,6 +89,7 @@ public class DataController {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e.getMessage());
 		}
+		this.verdanaFont = new Font("Verdana", Font.PLAIN, 15);
 	}
 	
 	public void saveData(){
@@ -174,6 +177,10 @@ public class DataController {
 
 	public void setUserIcon(BufferedImage userIcon) {
 		this.userIcon = userIcon;
+	}
+
+	public Font getVerdanaFont() {
+		return verdanaFont;
 	}
 
 	public BufferedImage getMessengerIcon(){
