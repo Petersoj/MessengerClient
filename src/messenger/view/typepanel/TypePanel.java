@@ -46,7 +46,7 @@ public class TypePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, typeArea, -130, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, typeArea, 18, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, sendButton, -30, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.NORTH, sendButton, -35, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.SOUTH, sendButton, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, sendButton, -10, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, sendButton, 20, SpringLayout.EAST, typeArea);

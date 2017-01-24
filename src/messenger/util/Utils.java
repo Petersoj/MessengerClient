@@ -1,5 +1,6 @@
 package messenger.util;
 
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -34,5 +35,14 @@ public class Utils {
 		ByteArrayInputStream byteInputStream = new ByteArrayInputStream(imageBytes);
 		return ImageIO.read(byteInputStream);
 	}
+	
+	public static void drawCenteredText(Graphics2D g2, String text, int width, int height){
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int x = (width - fontMetrics.stringWidth(text)) / 2;
+		int y = ((height - fontMetrics.getHeight()) / 2) + fontMetrics.getAscent();
+		g2.drawString(text, x, y);
+	}
+	
+	
 	
 }
