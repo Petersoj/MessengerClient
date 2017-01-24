@@ -28,7 +28,7 @@ public class MessengerPanel extends JPanel {
 	
 	private void setupPanel(){
 		this.setLayout(springLayout);
-		//this.add(messagePanel);
+		this.add(messagePanel);
 		this.add(typePanel);
 	}
 	
@@ -37,6 +37,11 @@ public class MessengerPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.SOUTH, typePanel, 0, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.EAST, typePanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, typePanel, 0, SpringLayout.WEST, this);
+		
+		springLayout.putConstraint(SpringLayout.NORTH, messagePanel, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, messagePanel, 0, SpringLayout.NORTH, typePanel);
+		springLayout.putConstraint(SpringLayout.EAST, messagePanel, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, messagePanel, 0, SpringLayout.WEST, this);
 	}
 
 	public MessengerFrame getMessengerFrame() {

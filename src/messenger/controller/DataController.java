@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 
 import javax.imageio.ImageIO;
 
-import messenger.user.UserColor;
+import messenger.util.MessengerColor;
 
 public class DataController {
 
@@ -25,7 +25,7 @@ public class DataController {
 	private String ipAddress;
 	private int port;
 	private String userName;
-	private UserColor userColor;
+	private MessengerColor userColor;
 	private BufferedImage userIcon;
 	
 	private Font verdanaFont;
@@ -72,7 +72,7 @@ public class DataController {
 				}else if(key.equalsIgnoreCase("name")){
 					this.userName = value;
 				}else if(key.equalsIgnoreCase("color")){
-					this.userColor = UserColor.valueOf(value);
+					this.userColor = MessengerColor.valueOf(value);
 				}
 			}
 			this.userIcon = ImageIO.read(new File(dataFilePath + "/userIcon.png"));
@@ -163,11 +163,11 @@ public class DataController {
 		this.userName = userName;
 	}
 
-	public UserColor getUserColor() {
+	public MessengerColor getUserColor() {
 		return userColor;
 	}
 
-	public void setUserColor(UserColor userColor) {
+	public void setUserColor(MessengerColor userColor) {
 		this.userColor = userColor;
 	}
 

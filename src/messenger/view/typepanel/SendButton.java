@@ -1,6 +1,5 @@
 package messenger.view.typepanel;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -9,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JButton;
+
+import messenger.util.MessengerColor;
 
 public class SendButton extends JButton implements ActionListener {
 	
@@ -21,8 +22,11 @@ public class SendButton extends JButton implements ActionListener {
 	}
 	
 	private void setupComponent(){
+		this.setOpaque(false);
+		this.setFocusPainted(false);
+		this.setBorderPainted(false);
+		this.setContentAreaFilled(false);
 		this.addActionListener(this);
-
 	}
 	
 	@Override
@@ -33,7 +37,7 @@ public class SendButton extends JButton implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		RoundRectangle2D backGround = new RoundRectangle2D.Float(0, 0, this.getWidth(), this.getHeight(), 25, 25);
-		g2.setColor(Color.BLUE);
+		g2.setColor(MessengerColor.BLUE.applyAlpha(100));
 		g2.fill(backGround);
 	}
 
