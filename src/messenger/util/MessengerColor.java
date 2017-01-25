@@ -19,5 +19,5 @@ public enum MessengerColor {
 	public Color applyAlpha(int alpha){
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
-	
+
 }

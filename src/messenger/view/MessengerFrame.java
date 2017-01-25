@@ -36,8 +36,22 @@ public class MessengerFrame extends JFrame {
 		this.setContentPane(messengerPanel); // after sizing so validate doesn't get called last seconds.
 		
 		this.setVisible(true);
+		
+		this.revalidate(); // Was having some weird issues with the typePanel not being the given size. This fixed it.
 	}
-
+	
+	// Really didn't have to look this up :P
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public void enableOSXFullscreen(Window window) {
+		try {
+			Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
+			Class params[] = new Class[]{Window.class, Boolean.TYPE};
+			Method method = util.getMethod("setWindowCanFullScreen", params);
+			method.invoke(util, window, true);
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+	}
 	
 	public MessengerController getMessengerController(){
 		return messengerController;
@@ -45,18 +59,5 @@ public class MessengerFrame extends JFrame {
 
 	public MessengerPanel getMessengerPanel() {
 		return messengerPanel;
-	}
-	
-	// Really didn't have to look this up :P
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void enableOSXFullscreen(Window window) {
-	    try {
-	        Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
-	        Class params[] = new Class[]{Window.class, Boolean.TYPE};
-	        Method method = util.getMethod("setWindowCanFullScreen", params);
-	        method.invoke(util, window, true);
-	    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
-	        ex.printStackTrace();
-	    }
 	}
 }

@@ -1,4 +1,4 @@
-package messenger.view.menubar;
+package messenger.view.userpreferences;
 
 import javax.swing.JPanel;
 

@@ -3,7 +3,7 @@ package messenger.view;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-import messenger.view.messagepanel.MessagePanel;
+import messenger.view.messagepanel.MessagesPanel;
 import messenger.view.typepanel.TypePanel;
 
 public class MessengerPanel extends JPanel {
@@ -12,14 +12,14 @@ public class MessengerPanel extends JPanel {
 	
 	private SpringLayout springLayout;
 	
-	private MessagePanel messagePanel;
+	private MessagesPanel messagesPanel;
 	private TypePanel typePanel;
 	
 	public MessengerPanel(MessengerFrame messengerFrame){
 		super();
 		this.messengerFrame = messengerFrame;
 		this.springLayout = new SpringLayout();
-		this.messagePanel = new MessagePanel(this);
+		this.messagesPanel = new MessagesPanel(this);
 		this.typePanel = new TypePanel(this);
 		
 		this.setupPanel();
@@ -28,7 +28,7 @@ public class MessengerPanel extends JPanel {
 	
 	private void setupPanel(){
 		this.setLayout(springLayout);
-		this.add(messagePanel);
+		this.add(messagesPanel);
 		this.add(typePanel);
 	}
 	
@@ -38,10 +38,10 @@ public class MessengerPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, typePanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, typePanel, 0, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, messagePanel, 0, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, messagePanel, 0, SpringLayout.NORTH, typePanel);
-		springLayout.putConstraint(SpringLayout.EAST, messagePanel, 0, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.WEST, messagePanel, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, messagesPanel, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, messagesPanel, 0, SpringLayout.NORTH, typePanel);
+		springLayout.putConstraint(SpringLayout.EAST, messagesPanel, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, messagesPanel, 0, SpringLayout.WEST, this);
 	}
 
 	public MessengerFrame getMessengerFrame() {
@@ -52,8 +52,8 @@ public class MessengerPanel extends JPanel {
 		return springLayout;
 	}
 
-	public MessagePanel getMessagePanel() {
-		return messagePanel;
+	public MessagesPanel getMessagesPanel() {
+		return messagesPanel;
 	}
 
 	public TypePanel getTypePanel() {

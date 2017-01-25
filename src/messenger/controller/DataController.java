@@ -30,6 +30,7 @@ public class DataController {
 	
 	private Font verdanaFont;
 	private BufferedImage messengerIcon;
+	private BufferedImage attachmentIcon;
 
 	public DataController(MessengerController messengerController) {
 		this.messengerController = messengerController;
@@ -85,6 +86,7 @@ public class DataController {
 	private void loadOtherAssets(){
 		try {
 			this.messengerIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png"));
+			this.attachmentIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/attachmentIcon.png"));
 		} catch (Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e.getMessage());
@@ -92,14 +94,15 @@ public class DataController {
 		this.verdanaFont = new Font("Verdana", Font.PLAIN, 15);
 	}
 	
-	public void saveData(){
+	public void saveData(boolean saveOnlyText){
 		try{
+			if(!saveOnlyText){
+				ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
+			}
 			FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
 			String data = "ip:" + this.ipAddress + "-port:" + String.valueOf(this.port) + "-name:" + this.userName + "-color:" + this.userColor.toString();
 			fileWriter.write(data);
 			fileWriter.close();
-			
-			ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e.getMessage());
@@ -185,5 +188,9 @@ public class DataController {
 
 	public BufferedImage getMessengerIcon(){
 		return messengerIcon;
+	}
+
+	public BufferedImage getAttachmentIcon() {
+		return attachmentIcon;
 	}
 }
