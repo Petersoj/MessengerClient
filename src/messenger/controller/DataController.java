@@ -11,8 +11,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import messenger.util.MessengerColor;
+import messenger.util.Utils;
 
 public class DataController {
 
@@ -31,6 +33,11 @@ public class DataController {
 	private Font verdanaFont;
 	private BufferedImage messengerIcon;
 	private BufferedImage attachmentIcon;
+	
+	private ImageIcon aboutIcon;
+	private ImageIcon githubIcon;
+	private ImageIcon instagramIcon;
+	private ImageIcon websiteIcon;
 
 	public DataController(MessengerController messengerController) {
 		this.messengerController = messengerController;
@@ -87,6 +94,11 @@ public class DataController {
 		try {
 			this.messengerIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png"));
 			this.attachmentIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/attachmentIcon.png"));
+			
+			this.aboutIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/about.png")), 20, 20));
+			this.githubIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/github.png")), 20, 20));
+			this.instagramIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/instagram.png")), 20, 20));
+			this.websiteIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/website.png")), 20, 20));
 		} catch (Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e.getMessage());
@@ -193,4 +205,21 @@ public class DataController {
 	public BufferedImage getAttachmentIcon() {
 		return attachmentIcon;
 	}
+	
+	public ImageIcon getAboutIcon() {
+		return aboutIcon;
+	}
+	
+	public ImageIcon getGithubIcon() {
+		return githubIcon;
+	}
+
+	public ImageIcon getInstagramIcon() {
+		return instagramIcon;
+	}
+
+	public ImageIcon getWebsiteIcon() {
+		return websiteIcon;
+	}
+	
 }

@@ -15,11 +15,10 @@ public class MessengerController {
 		this.debug = new Debug(this);
 		this.dataController = new DataController(this);
 		if(!this.dataController.errorOccured()){
-			//this.user = new User(this);
+			this.user = new User(this);
 			this.messengerFrame = new MessengerFrame(this);
 		}else{ // problem loading files!
-			this.debug.presentError("Fatal Error", "Closing program!");
-			System.exit(0);
+			this.debug.presentError("Fatal Error", "Program cannot open!");
 		}
 	}
 	

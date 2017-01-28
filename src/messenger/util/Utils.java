@@ -1,6 +1,7 @@
 package messenger.util;
 
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,7 @@ import javax.imageio.ImageIO;
 public class Utils {
 	
 	public static BufferedImage getScaledImage(BufferedImage source, int width, int height){
-	    BufferedImage resizedImage = new BufferedImage(width, height, source.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : source.getType());
+	    BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g2 = resizedImage.createGraphics();
 	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	    g2.drawImage(source, 0, 0, width, height, null);
@@ -43,6 +44,14 @@ public class Utils {
 		g2.drawString(text, x, y);
 	}
 	
-	
+	public static Graphics2D getChangedGraphics2D(Graphics g){
+		if(g instanceof Graphics2D){
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // Make every things smooth
+			return g2;
+		}else{
+			return null;
+		}
+	}
 	
 }

@@ -10,8 +10,6 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import messenger.util.MessengerColor;
-
 public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
 	
 	private TypePanel typePanel;
@@ -76,10 +74,7 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
-			if(this.getText().equalsIgnoreCase("green")){
-				this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController().setUserColor(MessengerColor.GREEN);
-				System.out.println("g");
-			}
+			
 		}
 	}
 

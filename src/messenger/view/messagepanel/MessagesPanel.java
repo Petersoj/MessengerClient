@@ -35,6 +35,7 @@ public class MessagesPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		
 	}
 	
 	public MessengerPanel getMessengerPanel() {
