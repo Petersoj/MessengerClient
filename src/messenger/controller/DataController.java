@@ -83,7 +83,7 @@ public class DataController {
 					this.userColor = MessengerColor.valueOf(value);
 				}
 			}
-			this.userIcon = ImageIO.read(new File(dataFilePath + "/userIcon.png"));
+			this.userIcon = Utils.drawRoundedImage(ImageIO.read(new File(dataFilePath + "/userIcon.png")));
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Parsing Data", e.getMessage());

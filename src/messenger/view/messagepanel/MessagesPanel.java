@@ -1,5 +1,6 @@
 package messenger.view.messagepanel;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -20,7 +21,7 @@ public class MessagesPanel extends JPanel {
 	}
 	
 	private void setupPanel(){
-		
+		this.setBackground(Color.WHITE);
 	}
 
 	private void setupLayout(){

@@ -1,4 +1,4 @@
-package messenger.view.connect;
+package messenger.view.menubar.connect;
 
 import javax.swing.JDialog;
 

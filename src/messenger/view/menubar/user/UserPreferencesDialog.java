@@ -1,4 +1,4 @@
-package messenger.view.userpreferences;
+package messenger.view.menubar.user;
 
 import javax.swing.JDialog;
 
@@ -19,7 +19,16 @@ public class UserPreferencesDialog extends JDialog {
 	}
 	
 	private void setupDialog(){
-		
+		this.setContentPane(userPreferencesPanel);
+		this.setResizable(true);
+	}
+	
+	public void prepareDialog(){
+		this.setSize(600, 230);
+		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 	}
 
+	public MessengerPanel getMessengerPanel(){
+		return messengerPanel;
+	}
 }

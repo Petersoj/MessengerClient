@@ -1,5 +1,7 @@
 package messenger.view.menubar.about;
 
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,7 +58,7 @@ public class AboutPanel extends JPanel {
 		this.setLayout(springLayout);
 		this.add(titleLabel);
 		this.add(aboutTextArea);
-		this.revalidate();
+		this.setBackground(Color.WHITE);
 	}
 	
 	private void setupLayout(){

@@ -33,7 +33,6 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 		this.getDocument().addDocumentListener(this);
 		this.addKeyListener(this);
 		
-		
 		this.setFont(typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController().getVerdanaFont());
 		
 		this.setCaretColor(typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController().getUserColor().getColor());

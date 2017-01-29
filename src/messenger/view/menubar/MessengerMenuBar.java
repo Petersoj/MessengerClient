@@ -11,12 +11,14 @@ import javax.swing.JMenuItem;
 import messenger.controller.DataController;
 import messenger.view.MessengerFrame;
 import messenger.view.menubar.about.AboutDialog;
+import messenger.view.menubar.user.UserPreferencesDialog;
 
 public class MessengerMenuBar extends JMenuBar {
 	
 	private MessengerFrame messengerFrame;
 	
 	private AboutDialog aboutDialog;
+	private UserPreferencesDialog userPreferencesDialog;
 	
 	private JMenu connectMenu;
 	private JMenu userMenu;
@@ -37,6 +39,7 @@ public class MessengerMenuBar extends JMenuBar {
 		this.messengerFrame = messengerFrame;
 		
 		this.aboutDialog = new AboutDialog(messengerFrame.getMessengerPanel());
+		this.userPreferencesDialog = new UserPreferencesDialog(messengerFrame.getMessengerPanel());
 		
 		this.connectMenu = new JMenu("Connect");
 		this.userMenu = new JMenu("User");
@@ -84,8 +87,10 @@ public class MessengerMenuBar extends JMenuBar {
 	}
 	
 	private void setupListeners(){
-		this.aboutItem.addActionListener((ActionEvent e) -> aboutDialog.setVisible(true));
-		this.githubItem.addActionListener((ActionEvent e) -> openLink("https://github.com/Petersoj/MessengerClient")); // Lamda expression :D
+		 // Lamda expression :D
+		this.userPreferencesItem.addActionListener((ActionEvent) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
+		this.aboutItem.addActionListener((ActionEvent e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
+		this.githubItem.addActionListener((ActionEvent e) -> openLink("https://github.com/Petersoj/MessengerClient"));
 		this.instagramItem.addActionListener((ActionEvent e) -> openLink("http://www.instagram.com/jacob.lp/"));
 		this.websiteItem.addActionListener((ActionEvent e) -> openLink("http://www.jacobpeterson.net"));
 	}

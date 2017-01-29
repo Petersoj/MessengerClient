@@ -1,5 +1,7 @@
 package messenger.util;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -54,4 +56,24 @@ public class Utils {
 		}
 	}
 	
+	public static BufferedImage drawRoundedImage(BufferedImage image){
+		int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage rounded = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D g2 = rounded.createGraphics();
+        
+        g2.setComposite(AlphaComposite.Src);
+        
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(Color.WHITE);
+        g2.fillOval(0, 0, width, height);
+        
+        g2.setComposite(AlphaComposite.SrcAtop);
+        g2.drawImage(image, 0, 0, null);
+
+        g2.dispose();
+        
+        return rounded;
+	}
 }

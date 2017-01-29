@@ -21,7 +21,10 @@ public class AboutDialog extends JDialog {
 	public void setupDialog(){
 		this.setContentPane(aboutPanel);
 		this.setResizable(true);
-		this.setSize(500, 300);
+	}
+	
+	public void prepareDialog(){
+		this.setSize(500, 270);
 		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 	}
 	

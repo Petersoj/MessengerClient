@@ -25,7 +25,7 @@ public class TypePanel extends JPanel {
 	public TypePanel(MessengerPanel messengerPanel){
 		super();
 		this.messengerPanel = messengerPanel;
-		this.typeAreaColor = new Color(230, 230, 230);
+		this.typeAreaColor = new Color(245, 245, 245);
 		this.springLayout = new SpringLayout();
 		
 		this.typeArea = new TypeArea(this);
@@ -33,12 +33,14 @@ public class TypePanel extends JPanel {
 		
 		this.setupPanel();
 		this.setupLayout();
+		
 	}
 	
 	private void setupPanel(){
 		this.setLayout(springLayout);
 		this.add(typeArea);
 		this.add(attachmentButton);
+		this.setBackground(Color.WHITE);
 	}
 	
 	private void setupLayout(){
