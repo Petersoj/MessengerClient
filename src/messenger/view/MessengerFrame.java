@@ -1,5 +1,6 @@
 package messenger.view;
 
+import java.awt.Dimension;
 import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,6 +32,7 @@ public class MessengerFrame extends JFrame {
 		
 		this.setTitle("Messenger");
 		this.setSize(800, 600);
+		this.setMinimumSize(new Dimension(250, 200));
 		this.setLocationRelativeTo(null); // Centers the frame
 		this.setIconImage(messengerController.getDataController().getMessengerIcon());
 		

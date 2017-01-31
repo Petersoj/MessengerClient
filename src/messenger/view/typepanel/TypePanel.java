@@ -33,7 +33,6 @@ public class TypePanel extends JPanel {
 		
 		this.setupPanel();
 		this.setupLayout();
-		
 	}
 	
 	private void setupPanel(){

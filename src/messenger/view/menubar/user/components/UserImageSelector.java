@@ -89,6 +89,4 @@ public class UserImageSelector extends JButton implements ActionListener {
 			}
 		}
 	}
-
-
 }

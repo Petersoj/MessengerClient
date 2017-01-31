@@ -62,9 +62,9 @@ public class AttachmentButton extends JButton implements ActionListener {
 		JFileChooser fileChooser = new JFileChooser();
 		int value = fileChooser.showOpenDialog(this.typePanel.getMessengerPanel());
 		if(value == JFileChooser.APPROVE_OPTION){
-			this.typePanel.getTypeArea().setText(fileChooser.getSelectedFile().getAbsolutePath());
+			
 		}else{
-			this.typePanel.getTypeArea().setText("NO FILE SELECTED :(");
+			
 		}
 	}
 }

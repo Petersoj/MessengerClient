@@ -1,4 +1,4 @@
-package messenger.view.menubar.user;
+package messenger.view.menubar.connect;
 
 import java.awt.Dimension;
 
@@ -6,22 +6,22 @@ import javax.swing.JDialog;
 
 import messenger.view.MessengerPanel;
 
-public class UserPreferencesDialog extends JDialog {
+public class ConnectOptionDialog extends JDialog {
 	
 	private MessengerPanel messengerPanel;
 	
-	private UserPreferencesPanel userPreferencesPanel;
+	private ConnectOptionPanel connectOptionPanel;
 	
-	public UserPreferencesDialog(MessengerPanel messengerPanel){
+	public ConnectOptionDialog(MessengerPanel messengerPanel){
 		super();
 		this.messengerPanel = messengerPanel;
-		this.userPreferencesPanel = new UserPreferencesPanel(this);
+		this.connectOptionPanel = new ConnectOptionPanel(this);
 		
 		this.setupDialog();
 	}
 	
 	private void setupDialog(){
-		this.setContentPane(userPreferencesPanel);
+		this.setContentPane(connectOptionPanel);
 		this.setResizable(true);
 	}
 	
@@ -30,10 +30,11 @@ public class UserPreferencesDialog extends JDialog {
 		this.setMaximumSize(new Dimension(650, 400));
 		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 		
-		this.userPreferencesPanel.getNameLabel().requestFocusInWindow(); // Prevents text field from being autoFocused
+		//this.connectOptionPanel.getNameLabel().requestFocusInWindow(); // Prevents text field from being autoFocused
 	}
 
 	public MessengerPanel getMessengerPanel(){
 		return messengerPanel;
 	}
+
 }

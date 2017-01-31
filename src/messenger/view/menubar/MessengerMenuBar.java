@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import messenger.controller.DataController;
 import messenger.view.MessengerFrame;
 import messenger.view.menubar.about.AboutDialog;
+import messenger.view.menubar.connect.ConnectOptionDialog;
 import messenger.view.menubar.user.UserPreferencesDialog;
 
 public class MessengerMenuBar extends JMenuBar {
@@ -19,12 +20,13 @@ public class MessengerMenuBar extends JMenuBar {
 	
 	private AboutDialog aboutDialog;
 	private UserPreferencesDialog userPreferencesDialog;
+	private ConnectOptionDialog connectOptionDialog;
 	
 	private JMenu connectMenu;
 	private JMenu userMenu;
 	private JMenu aboutMenu;
 
-	private JMenuItem connectionOptionItem;
+	private JMenuItem connectOptionItem;
 	private JMenuItem connectItem;
 	
 	private JMenuItem userPreferencesItem;
@@ -40,12 +42,13 @@ public class MessengerMenuBar extends JMenuBar {
 		
 		this.aboutDialog = new AboutDialog(messengerFrame.getMessengerPanel());
 		this.userPreferencesDialog = new UserPreferencesDialog(messengerFrame.getMessengerPanel());
+		this.connectOptionDialog = new ConnectOptionDialog(messengerFrame.getMessengerPanel());
 		
 		this.connectMenu = new JMenu("Connect");
 		this.userMenu = new JMenu("User");
 		this.aboutMenu = new JMenu("About");
 		
-		this.connectionOptionItem = new JMenuItem("Connection Options");
+		this.connectOptionItem = new JMenuItem("Connect Options");
 		this.connectItem = new JMenuItem("Connect");
 		
 		this.userPreferencesItem = new JMenuItem("User Preferences");
@@ -62,7 +65,7 @@ public class MessengerMenuBar extends JMenuBar {
 	private void setupMenuBar(){
 		DataController dataController = this.messengerFrame.getMessengerController().getDataController();
 		
-		connectMenu.add(connectionOptionItem);
+		connectMenu.add(connectOptionItem);
 		connectMenu.addSeparator();
 		connectMenu.add(connectItem);
 		
@@ -88,6 +91,8 @@ public class MessengerMenuBar extends JMenuBar {
 	
 	private void setupListeners(){
 		 // Lamda expression :D
+		this.connectOptionItem.addActionListener((ActionEvent) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
+		this.connectItem.addActionListener((ActionEvent) -> {  });
 		this.userPreferencesItem.addActionListener((ActionEvent) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
 		this.aboutItem.addActionListener((ActionEvent e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
 		this.githubItem.addActionListener((ActionEvent e) -> openLink("https://github.com/Petersoj/MessengerClient"));
