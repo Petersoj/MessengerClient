@@ -76,35 +76,41 @@ public class UserPreferencesPanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, userColorPanel, -60, SpringLayout.SOUTH, userImageSelector);
 		springLayout.putConstraint(SpringLayout.SOUTH, userColorPanel, -30, SpringLayout.SOUTH, userImageSelector);
-		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 0, SpringLayout.EAST, nameField);
+		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, userColorPanel, 0, SpringLayout.WEST, nameLabel);
 	}
 	
 	private void setupListeners(){
 		this.nameField.addActionListener((ActionEvent e) -> {
-			DataController dataController = this.userPreferencesDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
-			String typedInName = e.getActionCommand();
-			if(!(typedInName.equals(dataController.getUserName()))){ // Only change the username if changed at all
-				dataController.setUserName(typedInName);
-				dataController.saveData(true);
-				nameLabel.requestFocusInWindow(); // Make the nameField Unfocused
-			}
+			changeName();
 		});
 		this.nameField.addFocusListener(new FocusListener() {  // Used for when the close the dialog without hitting return.
 			@Override
 			public void focusLost(FocusEvent e) {
-				DataController dataController = userPreferencesDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
-				String typedInName = nameField.getText();
-				if(!(typedInName.equals(dataController.getUserName()))){ // Only change the username if changed at all
-					dataController.setUserName(typedInName);
-					dataController.saveData(true);
-					System.out.println("saved in focus llsot");
-					nameLabel.requestFocusInWindow(); // Make the nameField Unfocused
-				}
+				changeName();
 			}
 			@Override
 			public void focusGained(FocusEvent e) { } // unused
 		});
+	}
+	
+	private void changeName(){
+		DataController dataController = this.userPreferencesDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
+		String typedInName = this.nameField.getText();
+		if(! (typedInName.equals(dataController.getUserName()))){ // Only change the username if changed at all
+			if(typedInName.contains(":")){
+				typedInName = typedInName.replaceAll(":", ""); // If they type in ':', They will cause a parsing error on the next startup.
+				this.nameField.setText(typedInName);
+			}
+			if(typedInName.length() > 20){
+				typedInName = typedInName.substring(0, 20);
+				this.nameField.setText(typedInName);
+			}
+			dataController.setUserName(typedInName);
+			dataController.saveData(true);
+			
+			this.nameLabel.requestFocusInWindow();
+		}
 	}
 	
 	public UserPreferencesDialog getUserPreferencesDialog(){
