@@ -1,7 +1,6 @@
 package messenger.view.menubar.user;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -29,7 +28,7 @@ public class UserPreferencesPanel extends JPanel {
 		this.userPreferencesDialog = userPreferencesDialog;
 		this.springLayout = new SpringLayout();
 		this.userImageSelector = new UserImageSelector(this);
-		this.nameLabel = new JLabel();
+		this.nameLabel = new JLabel("Name:");
 		this.nameField = new JTextField();
 		this.userColorPanel = new UserColorPanel(this);
 		
@@ -42,7 +41,6 @@ public class UserPreferencesPanel extends JPanel {
 	private void setupComponents(){
 		DataController dataController = this.userPreferencesDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
-		this.nameLabel.setText("Name:");
 		this.nameLabel.setFont(dataController.getVerdanaFont());
 		this.nameLabel.setHorizontalTextPosition(JLabel.CENTER);
 		
@@ -81,10 +79,10 @@ public class UserPreferencesPanel extends JPanel {
 	}
 	
 	private void setupListeners(){
-		this.nameField.addActionListener((ActionEvent e) -> {
+		this.nameField.addActionListener((e) -> {
 			changeName();
 		});
-		this.nameField.addFocusListener(new FocusListener() {  // Used for when the close the dialog without hitting return.
+		this.nameField.addFocusListener(new FocusListener() {  // Used if they close the dialog without hitting return
 			@Override
 			public void focusLost(FocusEvent e) {
 				changeName();
@@ -97,19 +95,22 @@ public class UserPreferencesPanel extends JPanel {
 	private void changeName(){
 		DataController dataController = this.userPreferencesDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		String typedInName = this.nameField.getText();
-		if(! (typedInName.equals(dataController.getUserName()))){ // Only change the username if changed at all
-			if(typedInName.contains(":")){
-				typedInName = typedInName.replaceAll(":", ""); // If they type in ':', They will cause a parsing error on the next startup.
-				this.nameField.setText(typedInName);
+		if(!(typedInName.equals(dataController.getUserName()))){ // Only change the username if changed at all
+			if(typedInName.contains(",")){
+				typedInName = typedInName.replaceAll(",", ""); // If they type in ',', They will cause a parsing error on the next startup.
+			}
+			if(typedInName.contains("=")){
+				typedInName = typedInName.replaceAll("=", ""); // If they type in ':', They will cause a parsing error on the next startup.
 			}
 			if(typedInName.length() > 20){
 				typedInName = typedInName.substring(0, 20);
-				this.nameField.setText(typedInName);
 			}
+			this.nameField.setText(typedInName);
+
 			dataController.setUserName(typedInName);
 			dataController.saveData(true);
 			
-			this.nameLabel.requestFocusInWindow();
+			this.nameLabel.requestFocusInWindow(); // Makes Text field un-focused
 		}
 	}
 	

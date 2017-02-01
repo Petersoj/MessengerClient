@@ -1,7 +1,6 @@
 package messenger.view.menubar;
 
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
 import java.net.URI;
 
 import javax.swing.JMenu;
@@ -90,14 +89,16 @@ public class MessengerMenuBar extends JMenuBar {
 	}
 	
 	private void setupListeners(){
-		 // Lamda expression :D
-		this.connectOptionItem.addActionListener((ActionEvent) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
-		this.connectItem.addActionListener((ActionEvent) -> {  });
-		this.userPreferencesItem.addActionListener((ActionEvent) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
-		this.aboutItem.addActionListener((ActionEvent e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
-		this.githubItem.addActionListener((ActionEvent e) -> openLink("https://github.com/Petersoj/MessengerClient"));
-		this.instagramItem.addActionListener((ActionEvent e) -> openLink("http://www.instagram.com/jacob.lp/"));
-		this.websiteItem.addActionListener((ActionEvent e) -> openLink("http://www.jacobpeterson.net"));
+		 // Lamda expressions :D
+		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
+		this.connectItem.addActionListener((e) -> { 
+			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer(); 
+		});
+		this.userPreferencesItem.addActionListener((e) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
+		this.aboutItem.addActionListener((e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
+		this.githubItem.addActionListener((e) -> openLink("https://github.com/Petersoj/MessengerClient"));
+		this.instagramItem.addActionListener((e) -> openLink("http://www.instagram.com/jacob.lp/"));
+		this.websiteItem.addActionListener((e) -> openLink("http://www.jacobpeterson.net"));
 	}
 	
 	public void openLink(String link){
@@ -109,5 +110,9 @@ public class MessengerMenuBar extends JMenuBar {
 	            messengerFrame.getMessengerController().getDebug().presentError("Open Link", "There was a problem opening this link.");
 	        }
 	    }
+	}
+	
+	public ConnectOptionDialog getConnectOptionDialog(){
+		return connectOptionDialog;
 	}
 }

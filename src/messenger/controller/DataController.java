@@ -4,11 +4,11 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -53,24 +53,27 @@ public class DataController {
 		try{
 			Files.createDirectory(Paths.get(dataFilePath));
 			this.copyDefaultsToDataDirectory();
-		}catch(IOException e) {
+		}catch(Exception e) {
 			if(e instanceof FileAlreadyExistsException){ // File already exists
 				if(!(new File(dataFilePath + "/textData.txt").exists())){ // textData does not exist
 					this.copyDefaultsToDataDirectory();
 				}
 			}else{
 				this.errorOccured = true;
-				messengerController.getDebug().presentError("Setting up Data Folder", e.getMessage());
+				messengerController.getDebug().presentError("Setting up Data Folder", e);
 			}
 		}
 	}
 	
 	private void parseDataIntoMembers(){ // I know I should use some markup language with its respective parser, but nah.
 		try{
-			String textData = new String(Files.readAllBytes(Paths.get(dataFilePath + "/textData.txt"))); // Text Data
-			String[] textDatas = textData.split("-");
-			for(String data : textDatas){
-				String[] splitData = data.split(":");
+			String stringTextData = new String(Files.readAllBytes(Paths.get(dataFilePath + "/textData.txt"))); // Text Data
+			String[] textData = stringTextData.split(",");
+			if(textData.length < 3){
+				throw new ParseException("Could not parse TextData", textData.length);
+			}
+			for(String data : textData){
+				String[] splitData = data.split("=");
 				String key = splitData[0];
 				String value = splitData[1];
 				if(key.equalsIgnoreCase("ip")){
@@ -86,7 +89,7 @@ public class DataController {
 			this.userIcon = Utils.drawRoundedImage(ImageIO.read(new File(dataFilePath + "/userIcon.png")));
 		}catch(Exception e) {
 			this.errorOccured = true;
-			messengerController.getDebug().presentError("Parsing Data", e.getMessage());
+			messengerController.getDebug().presentError("Parsing Data", e);
 		}
 	}
 	
@@ -101,33 +104,35 @@ public class DataController {
 			this.websiteIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/website.png")), 20, 20));
 		} catch (Exception e) {
 			this.errorOccured = true;
-			messengerController.getDebug().presentError("Load Assets", e.getMessage());
+			messengerController.getDebug().presentError("Load Assets", e);
 		}
 		this.verdanaFont = new Font("Verdana", Font.PLAIN, 15);
 	}
 	
-	public void saveData(boolean saveOnlyText){
+	public void saveData(boolean saveText){
 		try{
-			if(!saveOnlyText){
+			if(saveText){
+				FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
+				String data = "ip=" + this.ipAddress + ",port=" + String.valueOf(this.port) + ",name=" + this.userName + ",color=" + this.userColor.toString();
+				fileWriter.write(data);
+				fileWriter.close();
+			}else{
 				ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
 			}
-			FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
-			String data = "ip:" + this.ipAddress + "-port:" + String.valueOf(this.port) + "-name:" + this.userName + "-color:" + this.userColor.toString();
-			fileWriter.write(data);
-			fileWriter.close();
+			
 		}catch(Exception e) {
 			this.errorOccured = true;
-			messengerController.getDebug().presentError("Load Assets", e.getMessage());
+			messengerController.getDebug().presentError("Load Assets", e);
 		}
 	}
 	
-	private void copyDefaultsToDataDirectory(){
+	public void copyDefaultsToDataDirectory(){
 		try{
 			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/textData.txt"), Paths.get(dataFilePath + "/textData.txt"), StandardCopyOption.REPLACE_EXISTING);
 			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/userIcon.png"), Paths.get(dataFilePath + "/userIcon.png"), StandardCopyOption.REPLACE_EXISTING);
 		}catch(Exception e) {
 			this.errorOccured = true;
-			messengerController.getDebug().presentError("Copying Defaults", e.getMessage());
+			messengerController.getDebug().presentError("Copying Defaults", e);
 		}
 	}
 	
@@ -153,12 +158,12 @@ public class DataController {
 		return isOSX;
 	}
 
-	public String getIpAddress() {
+	public String getIPAddress() {
 		return ipAddress;
 	}
 	
 
-	public void setIpAddress(String ipAddress) {
+	public void setIPAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 

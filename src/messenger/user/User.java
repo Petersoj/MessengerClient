@@ -1,35 +1,48 @@
 package messenger.user;
 
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 import messenger.controller.MessengerController;
+import messenger.util.MessengerColor;
 
-public class User {
+public abstract class User {
 	
 	private MessengerController messengerController;
 	
-	private UserConnection userConnection;
-	private ArrayList<ServerUser> serverUsers;
+	private String userName;
+	private MessengerColor userColor;
+	private BufferedImage userImage;
 	
 	public User(MessengerController messengerController){
 		this.messengerController = messengerController;
-		this.serverUsers = new ArrayList<ServerUser>();
-	}
-	
-	public void connectToServer(){
-		this.userConnection = new UserConnection(this);
 	}
 
 	
 	public MessengerController getMessengerController() {
 		return messengerController;
 	}
-	
-	public UserConnection getUserConnection() {
-		return userConnection;
+
+	public String getUserName() {
+		return userName;
 	}
 
-	public ArrayList<ServerUser> getServerUsers() {
-		return serverUsers;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public MessengerColor getUserColor() {
+		return userColor;
+	}
+
+	public void setUserColor(MessengerColor userColor) {
+		this.userColor = userColor;
+	}
+
+	public BufferedImage getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(BufferedImage userImage) {
+		this.userImage = userImage;
 	}
 }

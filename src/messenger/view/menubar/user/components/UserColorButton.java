@@ -85,6 +85,8 @@ public class UserColorButton extends JButton implements ActionListener {
 			
 			this.userColorPanel.getUserPreferencesPanel().getUserPreferencesDialog().getMessengerPanel().getTypePanel().getTypeArea().setCaretColor(userColor.getColor());
 			this.userColorPanel.getUserPreferencesPanel().getNameField().setCaretColor(userColor.getColor());
+			this.userColorPanel.getUserPreferencesPanel().getUserPreferencesDialog().getMessengerPanel().getMessengerFrame()
+				.getMessengerMenuBar().getConnectOptionDialog().getConnectOptionPanel().setTextFieldCaretColors(userColor);
 			
 			dataController.saveData(true);
 			

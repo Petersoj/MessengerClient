@@ -2,10 +2,10 @@ package messenger.user;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class UserConnection extends Thread {
+public class ClientUserConnection extends Thread {
 	
 	private User user;
 	
@@ -13,13 +13,14 @@ public class UserConnection extends Thread {
 	private DataOutputStream dataOutputStream;
 	private DataInputStream dataInputStream;
 	
-	public UserConnection(User user){
+	public ClientUserConnection(User user){
 		this.user = user;
-		
 		try {
-			this.socket = new Socket(user.getMessengerController().getDataController().getIpAddress(), user.getMessengerController().getDataController().getPort());
-		} catch (IOException e) {
-			user.getMessengerController().getDebug().presentError("Socket connection", e.getMessage());
+			this.socket = new Socket();
+			this.socket.connect(new InetSocketAddress(user.getMessengerController().getDataController().getIPAddress(), 
+					user.getMessengerController().getDataController().getPort()), 1000);
+		} catch (Exception e) {
+			user.getMessengerController().getDebug().presentError("Socket connection", e);
 		}
 		this.dataOutputStream = new DataOutputStream(dataOutputStream);
 		this.dataInputStream = new DataInputStream(dataInputStream);
@@ -27,7 +28,7 @@ public class UserConnection extends Thread {
 	
 	@Override
 	public void run(){
-		while(!socket.isClosed()){
+		while(!socket.isClosed() && socket.isConnected()){
 			
 		}
 		this.close(false);

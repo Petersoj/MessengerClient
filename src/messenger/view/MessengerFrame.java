@@ -53,7 +53,7 @@ public class MessengerFrame extends JFrame {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch (Exception e) {
-				messengerController.getDebug().presentError("Properties setup", e.getMessage());
+				messengerController.getDebug().presentError("Properties setup", e);
 			}
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Messenger"); // Does not work sometimes!
@@ -69,7 +69,7 @@ public class MessengerFrame extends JFrame {
 			Method method = util.getMethod("setWindowCanFullScreen", params);
 			method.invoke(util, window, true);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException ex) {
-			ex.printStackTrace();
+			messengerController.getDebug().presentError("Properties setup", ex);
 		}
 	}
 	
@@ -79,5 +79,9 @@ public class MessengerFrame extends JFrame {
 
 	public MessengerPanel getMessengerPanel() {
 		return messengerPanel;
+	}
+	
+	public MessengerMenuBar getMessengerMenuBar(){
+		return messengerMenuBar;
 	}
 }

@@ -1,13 +1,15 @@
 package messenger.controller;
 
-import messenger.user.User;
+import javax.swing.SwingUtilities;
+
+import messenger.user.users.ClientUser;
 import messenger.view.MessengerFrame;
 
 public class MessengerController {
 	
 	private Debug debug;
 	private DataController dataController;
-	private User user;
+	private ClientUser clientUser;
 	private MessengerFrame messengerFrame;
 
 	
@@ -15,10 +17,15 @@ public class MessengerController {
 		this.debug = new Debug(this);
 		this.dataController = new DataController(this);
 		if(!this.dataController.errorOccured()){
-			this.user = new User(this);
-			this.messengerFrame = new MessengerFrame(this);
+			this.clientUser = new ClientUser(this);
+			SwingUtilities.invokeLater(() -> {
+				this.messengerFrame = new MessengerFrame(this);
+			});
 		}else{ // problem loading files!
-			this.debug.presentError("Fatal Error", "Program cannot open!");
+			this.debug.presentError("Fatal Error", "Program cannot open! Attempting to copy\ndefaults to app data directory");
+			if(dataController != null){
+				this.dataController.copyDefaultsToDataDirectory();
+			}
 		}
 	}
 	
@@ -36,8 +43,8 @@ public class MessengerController {
 		return dataController;
 	}
 
-	public User getUser() {
-		return user;
+	public ClientUser getClientUser() {
+		return clientUser;
 	}
 	
 	public MessengerFrame getMessengerFrame() {

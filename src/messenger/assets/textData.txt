@@ -1,1 +1,1 @@
-ip:10.0.5.2-port:6666-name:Default Name-color:BLUE
+ip=IP Address Here,port=2555,name=Default Name,color=BLUE

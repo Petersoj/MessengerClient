@@ -1,4 +1,4 @@
-package messenger.user;
+package messenger.user.users;
 
 import java.awt.image.BufferedImage;
 

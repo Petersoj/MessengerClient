@@ -21,6 +21,7 @@ public class AboutDialog extends JDialog {
 	public void setupDialog(){
 		this.setContentPane(aboutPanel);
 		this.setResizable(true);
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	public void prepareDialog(){

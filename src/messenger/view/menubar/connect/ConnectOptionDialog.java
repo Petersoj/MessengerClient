@@ -23,18 +23,23 @@ public class ConnectOptionDialog extends JDialog {
 	private void setupDialog(){
 		this.setContentPane(connectOptionPanel);
 		this.setResizable(true);
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	
 	public void prepareDialog(){ // Called everytime before visible
-		this.setSize(550, 230);
-		this.setMaximumSize(new Dimension(650, 400));
+		this.setSize(400, 170);
+		this.setMaximumSize(new Dimension(450, 250));
 		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 		
-		//this.connectOptionPanel.getNameLabel().requestFocusInWindow(); // Prevents text field from being autoFocused
+		this.connectOptionPanel.getIPAddressLabel().requestFocusInWindow(); // Prevents text field from being autoFocused
 	}
 
 	public MessengerPanel getMessengerPanel(){
 		return messengerPanel;
+	}
+	
+	public ConnectOptionPanel getConnectOptionPanel(){
+		return connectOptionPanel;
 	}
 
 }
