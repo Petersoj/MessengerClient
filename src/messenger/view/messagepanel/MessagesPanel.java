@@ -1,24 +1,22 @@
 package messenger.view.messagepanel;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
+import messenger.user.users.ClientUser;
 import messenger.view.MessengerPanel;
 
 public class MessagesPanel extends JPanel {
 	
 	private MessengerPanel messengerPanel;
 	
-	private Dimension prefferedSize;
 	private BoxLayout boxLayout;
 	
 	public MessagesPanel(MessengerPanel messengerPanel){
 		super();
 		this.messengerPanel = messengerPanel;
-		this.prefferedSize = new Dimension(5000, 9000);
 		this.boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		
 		this.setupPanel();
@@ -27,13 +25,20 @@ public class MessagesPanel extends JPanel {
 	private void setupPanel(){
 		this.setLayout(boxLayout);
 		this.setBackground(Color.WHITE);
+		
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco\nas\nasdf\nasdfdfasafds"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "aco\nas\nasdf\nasdfdfasafds"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "aco\nas\nasdf\nasdfdfasafds"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "aco\nas\nasdf\nasdfdfasafds"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "aco\nas\nasdf\nasdfdfasafds"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "Taco"));
+		this.add(new MessagePanel(this, new ClientUser(messengerPanel.getMessengerFrame().getMessengerController()), "aco\nas\nasdf\nasdfdfasafds"));
+		
 	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		return prefferedSize;
-	}
-	
 	
 	public MessengerPanel getMessengerPanel() {
 		return messengerPanel;
