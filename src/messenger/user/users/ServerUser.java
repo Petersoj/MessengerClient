@@ -1,42 +1,24 @@
 package messenger.user.users;
 
-import java.awt.image.BufferedImage;
+import messenger.controller.MessengerController;
+import messenger.user.User;
+import messenger.util.MessengerColor;
 
-public class ServerUser {
+public class ServerUser extends User {
 	
 	private int userID;
-	private String userName;
-	private BufferedImage userImage;
 	
-	public ServerUser(int id){
-		this.userName = "User " + id;
-		userImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+	public ServerUser(MessengerController messengerController, int userID){
+		super(messengerController);
+		this.userID = userID;
+		super.setUserName("Taco Sping 1234");
+		super.setUserColor(MessengerColor.BLUE);
+		super.setUserImage(messengerController.getDataController().getUserIcon());
 	}
 
-	
 	
 	public int getUserID() {
 		return userID;
-	}
-
-	public void setUserID(int userID) {
-		this.userID = userID;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public BufferedImage getUserImage() {
-		return userImage;
-	}
-
-	public void setUserImage(BufferedImage userImage) {
-		this.userImage = userImage;
 	}
 }
 

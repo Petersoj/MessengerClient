@@ -15,6 +15,10 @@ public class ClientUserConnection extends Thread {
 	
 	public ClientUserConnection(User user){
 		this.user = user;
+	}
+	
+	@Override
+	public void run(){
 		try {
 			this.socket = new Socket();
 			this.socket.connect(new InetSocketAddress(user.getMessengerController().getDataController().getIPAddress(), 
@@ -24,10 +28,7 @@ public class ClientUserConnection extends Thread {
 		}
 		this.dataOutputStream = new DataOutputStream(dataOutputStream);
 		this.dataInputStream = new DataInputStream(dataInputStream);
-	}
-	
-	@Override
-	public void run(){
+		
 		while(!socket.isClosed() && socket.isConnected()){
 			
 		}
