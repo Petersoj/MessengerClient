@@ -50,8 +50,9 @@ public class UserImageSelector extends JButton implements ActionListener {
 		
 		DataController dataController = userPreferencesPanel.getUserPreferencesDialog().getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
-		BufferedImage userIcon = dataController.getUserIcon();
+		BufferedImage userIcon = Utils.drawRoundedSquareImage(dataController.getUserIcon(), 150);
 		g2.drawImage(userIcon, 0, 0, this.getWidth(), this.getHeight(), 0, 0, userIcon.getWidth(), userIcon.getHeight(), null);
+		
 		if(this.getModel().isRollover()){
 			g2.setColor(grayedOver);
 			g2.fillOval(0, 0, this.getWidth(), this.getHeight());
@@ -79,11 +80,12 @@ public class UserImageSelector extends JButton implements ActionListener {
 			
 			if(fileName.endsWith(".jpg") || fileName.endsWith(".png")){
 				try {
-					messengerController.getDataController().setUserIcon(Utils.drawRoundedImage(ImageIO.read(selectedFile)));
+					BufferedImage userImage = ImageIO.read(selectedFile);
+					messengerController.getDataController().setUserIcon(userImage);
 					messengerController.getDataController().saveData(false);
 					repaint();
 				} catch (Exception error) {
-					messengerController.getDebug().presentError("Choosing a file!", error.getMessage());
+					messengerController.getDebug().presentError("Choosing a file!", error);
 				}
 			}
 		}

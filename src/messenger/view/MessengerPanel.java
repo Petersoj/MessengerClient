@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 import messenger.view.messagepanel.MessagesPanel;
-import messenger.view.messagepanel.ScrollBarUI;
 import messenger.view.typepanel.TypePanel;
 
 public class MessengerPanel extends JPanel {
@@ -35,7 +34,7 @@ public class MessengerPanel extends JPanel {
 	}
 	
 	private void setupComponents(){
-		this.messageScrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
+		//this.messageScrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
 		this.messageScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
 	}
@@ -74,5 +73,9 @@ public class MessengerPanel extends JPanel {
 
 	public TypePanel getTypePanel() {
 		return typePanel;
+	}
+	
+	public JScrollPane getMessageScrollPane(){
+		return messageScrollPane;
 	}
 }

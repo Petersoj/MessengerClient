@@ -23,6 +23,7 @@ public class UserPreferencesDialog extends JDialog {
 	private void setupDialog(){
 		this.setContentPane(userPreferencesPanel);
 		this.setResizable(true);
+		this.setAutoRequestFocus(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	

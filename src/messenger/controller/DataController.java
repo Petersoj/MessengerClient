@@ -86,7 +86,7 @@ public class DataController {
 					this.userColor = MessengerColor.valueOf(value);
 				}
 			}
-			this.userIcon = Utils.drawRoundedImage(ImageIO.read(new File(dataFilePath + "/userIcon.png")));
+			this.userIcon = ImageIO.read(new File(dataFilePath + "/userIcon.png"));
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Parsing Data", e);
@@ -119,7 +119,6 @@ public class DataController {
 			}else{
 				ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
 			}
-			
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e);

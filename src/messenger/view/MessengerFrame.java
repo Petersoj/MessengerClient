@@ -32,7 +32,7 @@ public class MessengerFrame extends JFrame {
 		
 		this.setTitle("Messenger");
 		this.setSize(800, 600);
-		this.setMinimumSize(new Dimension(250, 200));
+		this.setMinimumSize(new Dimension(350, 300));
 		this.setLocationRelativeTo(null); // Centers the frame
 		this.setIconImage(messengerController.getDataController().getMessengerIcon());
 		

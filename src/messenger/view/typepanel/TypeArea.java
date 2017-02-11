@@ -5,10 +5,14 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import messenger.view.messagepanel.MessagesPanel;
+import messenger.view.messagepanel.messagepanels.MessagePanel;
 
 public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
 	
@@ -73,12 +77,19 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
+			MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
+			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
+					messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
+			this.typePanel.getMessengerPanel().getMessagesPanel().add(messagePanel);
 			
+			JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
+			scrollBar.setValue(scrollBar.getMaximum() + (int)messagePanel.getPreferredSize().getHeight());
+			this.setText("");
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) { }
 	
 	
 	public void updateAttachmentButtonVisiblity(){

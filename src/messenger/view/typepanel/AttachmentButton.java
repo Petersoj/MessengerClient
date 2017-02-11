@@ -60,6 +60,9 @@ public class AttachmentButton extends JButton implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setApproveButtonText("Send");
+		fileChooser.setApproveButtonToolTipText("Send a file to others");
+		
 		int value = fileChooser.showOpenDialog(this.typePanel.getMessengerPanel());
 		if(value == JFileChooser.APPROVE_OPTION){
 			

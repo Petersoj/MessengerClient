@@ -23,6 +23,7 @@ public class ConnectOptionDialog extends JDialog {
 	private void setupDialog(){
 		this.setContentPane(connectOptionPanel);
 		this.setResizable(true);
+		this.setAutoRequestFocus(true);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 	

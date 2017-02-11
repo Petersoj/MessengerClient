@@ -2,16 +2,15 @@ package messenger.view.messagepanel.messagepanels;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SpringLayout;
 
 import messenger.controller.DataController;
 import messenger.user.User;
@@ -24,62 +23,21 @@ public class MessagePanel extends JPanel {
 	private MessagesPanel messagesPanel;
 	
 	private User user;
-	
 	private Dimension preferredSize;
-	private SpringLayout springLayout;
+	private Font userNameFont;
 	
-	private JLabel nameLabel;
-	private JTextArea messageArea;
+	private String message;
 	
 	public MessagePanel(MessagesPanel messagesPanel, User user, String message){
 		this.messagesPanel = messagesPanel;
+		
 		this.user = user;
+		this.message = message;
+		this.userNameFont = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController()
+				.getDataController().getVerdanaFont().deriveFont(13f);
 		
-		this.springLayout = new SpringLayout();
-		
-		this.messageArea = new JTextArea(message);
-		this.nameLabel = new JLabel(user.getUserName());
-		
-		this.setupComponents();
-		this.setupPanel();
-		this.setupLayout();
-	}
-	
-	private void setupComponents(){
-		DataController dataController = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
-
-		this.messageArea.setOpaque(false);
-		this.messageArea.setFont(dataController.getVerdanaFont());
-		this.messageArea.setEditable(false);
-		this.messageArea.setLineWrap(true);
-		this.messageArea.setWrapStyleWord(true);
-		
-		this.nameLabel.setFont(dataController.getVerdanaFont());
-	}
-	
-	private void setupPanel(){
-		this.setLayout(springLayout);
-		this.add(messageArea);
-		this.add(nameLabel);
-		
+		this.preferredSize = new Dimension(1, 50);
 		this.setBackground(Color.WHITE);
-	}
-	
-	private void setupLayout(){
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 0, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, nameLabel, (int) nameLabel.getPreferredSize().getHeight(), SpringLayout.NORTH, nameLabel);
-		if(user instanceof ClientUser){
-			springLayout.putConstraint(SpringLayout.EAST, nameLabel, -60, SpringLayout.EAST, this);
-			springLayout.putConstraint(SpringLayout.WEST, nameLabel, -(int) nameLabel.getPreferredSize().getWidth(), SpringLayout.EAST, nameLabel);
-		}else{
-			springLayout.putConstraint(SpringLayout.WEST, nameLabel, 60, SpringLayout.WEST, this);
-			springLayout.putConstraint(SpringLayout.EAST, nameLabel, (int) nameLabel.getPreferredSize().getWidth(), SpringLayout.WEST, nameLabel);
-		}
-		
-		springLayout.putConstraint(SpringLayout.NORTH, messageArea, 0, SpringLayout.SOUTH, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, messageArea, 0, SpringLayout.WEST, nameLabel);
-		
-		this.preferredSize = new Dimension(1, (int) messageArea.getPreferredSize().getHeight() + (int)this.nameLabel.getPreferredSize().getHeight());
 	}
 	
 	
@@ -88,19 +46,59 @@ public class MessagePanel extends JPanel {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = Utils.getChangedGraphics2D(g);
-
 		DataController dataController = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
-
-		BufferedImage userImage = user.getUserImage();
 		
-		int widthHeight = Math.min(this.getHeight(), 50);
-		g2.drawImage(userImage, 5, (int)nameLabel.getHeight(), widthHeight, widthHeight, 0, 0, userImage.getWidth(), userImage.getHeight(), null);
+		// User Name
+		g2.setFont(userNameFont);
+		FontMetrics userNameFontMetrics = g2.getFontMetrics();
+		String userName = user.getUserName();
 		
-		Rectangle messageAreaBounds = this.messageArea.getBounds();
-		RoundRectangle2D roundedRect = new RoundRectangle2D.Double(messageAreaBounds.getX() - 3, messageAreaBounds.getY() - 3,
-				messageAreaBounds.getWidth() + 6, messageAreaBounds.getHeight() + 6, 10, 10);
+		if(user instanceof ClientUser){
+			g2.drawString(userName, this.getWidth() - userNameFontMetrics.stringWidth(userName) - 70, userNameFontMetrics.getHeight() + 5);
+		}else{
+			g2.drawString(userName, 70, userNameFontMetrics.getHeight() + 5);
+		}
+		
+		g2.setFont(dataController.getVerdanaFont());
+		
+		// User Image
+		BufferedImage image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
+		int nameLabelHeight = userNameFontMetrics.getHeight() + 5;
+		
+		if(user instanceof ClientUser){
+			g2.drawImage(image, this.getWidth() - 5, nameLabelHeight, this.getWidth() - 55, nameLabelHeight + 50,
+					0, 0, image.getWidth(), image.getHeight(), null);
+		}else{
+			g2.drawImage(image, 5, nameLabelHeight, 55, nameLabelHeight + 50, 0, 0, image.getWidth(), image.getHeight(), null);
+		}
+		
+		Rectangle messageBounds = null;
+		
+		// Message Area
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int messageWidth = fontMetrics.stringWidth(message);
+		int fontHeight = fontMetrics.getAscent();
+		
+		if(messageWidth < this.getWidth() - 150){
+			if(user instanceof ClientUser){
+				messageBounds = new Rectangle(this.getWidth() - messageWidth - 70, userNameFontMetrics.getHeight() + 20, messageWidth, fontHeight);
+			}else{ // Server User
+				messageBounds = new Rectangle(70, userNameFontMetrics.getHeight() + 25, messageWidth, fontHeight);
+			}
+			this.drawMessageBackground(g2, messageBounds);
+			g2.setColor(Color.WHITE);
+			g2.drawString(message, (int) messageBounds.getX(), (int) (messageBounds.getY() + fontHeight - 2));
+		}else{
+			messageBounds = new Rectangle(4, 4, 4, 4);
+		}
+		
+		this.preferredSize.setSize(1, nameLabelHeight + messageBounds.getHeight() + 35);
+		System.out.println(nameLabelHeight + messageBounds.getHeight() + 25);
+	}
+	
+	private void drawMessageBackground(Graphics2D g2, Rectangle messageBounds){
 		g2.setColor(user.getUserColor().getColor());
-		g2.fill(roundedRect);
+		g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
 	}
 	
 	@Override
