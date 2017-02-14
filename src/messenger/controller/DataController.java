@@ -34,6 +34,9 @@ public class DataController {
 	private BufferedImage messengerIcon;
 	private BufferedImage attachmentIcon;
 	
+	private BufferedImage fileImage;
+	private BufferedImage downArrowImage;
+	
 	private ImageIcon aboutIcon;
 	private ImageIcon githubIcon;
 	private ImageIcon instagramIcon;
@@ -97,6 +100,9 @@ public class DataController {
 		try {
 			this.messengerIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/messengerIcon.png"));
 			this.attachmentIcon = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/attachmentIcon.png"));
+			
+			this.fileImage = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/fileImage.png"));
+			this.fileImage = ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/downArrow.png"));
 			
 			this.aboutIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/about.png")), 20, 20));
 			this.githubIcon = new ImageIcon(Utils.getScaledImage(ImageIO.read(this.getClass().getResourceAsStream("/messenger/assets/github.png")), 20, 20));
@@ -208,6 +214,14 @@ public class DataController {
 
 	public BufferedImage getAttachmentIcon() {
 		return attachmentIcon;
+	}
+	
+	public BufferedImage getFileImage(){
+		return fileImage;
+	}
+	
+	public BufferedImage getDownArrowImage(){
+		return downArrowImage;
 	}
 	
 	public ImageIcon getAboutIcon() {
