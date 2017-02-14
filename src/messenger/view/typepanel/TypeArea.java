@@ -12,6 +12,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import messenger.view.messagepanel.MessagesPanel;
+import messenger.view.messagepanel.messagepanels.FilePanel;
 import messenger.view.messagepanel.messagepanels.MessagePanel;
 
 public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
@@ -79,11 +80,20 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
-			MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
-			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-					messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
-			this.typePanel.getMessengerPanel().getMessagesPanel().add(messagePanel);
-			this.setText("");
+			if(this.getText().equals("file")){
+				MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
+				FilePanel filePanel = new FilePanel(messagesPanel, messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), "taco.jpg");
+				filePanel.revalidate();
+				filePanel.repaint();
+				this.typePanel.getMessengerPanel().getMessagesPanel().add(filePanel);
+				this.setText("");
+			}else{
+				MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
+				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
+						messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
+				this.typePanel.getMessengerPanel().getMessagesPanel().add(messagePanel);
+				this.setText("");
+			}
 		}
 	}
 	

@@ -41,19 +41,24 @@ public class MessagePanel extends JPanel {
 		
 		this.preferredSize = new Dimension(0, 0);
 		
+		this.setupComponents();
 		this.setupPanel();
 		this.setupLayout();
 	}
 	
-	private void setupPanel(){
+	private void setupComponents(){
 		DataController dataController = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
+		
+		this.nameLabel.setFont(dataController.getVerdanaFont().deriveFont(13f));
 		
 		this.messageArea.setOpaque(false);
 		this.messageArea.setEditable(false);
 		this.messageArea.setLineWrap(true);
 		this.messageArea.setWrapStyleWord(true);
 		this.messageArea.setFont(dataController.getVerdanaFont());
-		
+	}
+	
+	private void setupPanel(){
 		this.addComponentListener(new ComponentListener() {
 			public void componentShown(ComponentEvent e) {}
 			
@@ -61,7 +66,7 @@ public class MessagePanel extends JPanel {
 			public void componentResized(ComponentEvent e) {
 				preferredSize.setSize(1, nameLabel.getPreferredSize().getHeight() + 35 + messageArea.getPreferredSize().getHeight());
 				/*
-				 Due to limitations in JTextArea I canot make it resize according to it's line count and size
+				 Due to limitations in JTextArea, I cannot make it resize according to it's line count and size
 				 I have used a ton of different methods and none of them were successfull
 				 So when the screen is resized, some messages may go off the screen
 				 */
