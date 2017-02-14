@@ -71,6 +71,8 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
+		JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
+		scrollBar.setValue(scrollBar.getMaximum());
 	}
 
 	@Override
@@ -81,15 +83,15 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
 					messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
 			this.typePanel.getMessengerPanel().getMessagesPanel().add(messagePanel);
-			
-			JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
-			scrollBar.setValue(scrollBar.getMaximum() + (int)messagePanel.getPreferredSize().getHeight());
 			this.setText("");
 		}
 	}
-
+	
 	@Override
-	public void keyReleased(KeyEvent e) { }
+	public void keyReleased(KeyEvent e) {
+		JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
+		scrollBar.setValue(scrollBar.getMaximum());
+	}
 	
 	
 	public void updateAttachmentButtonVisiblity(){
@@ -107,5 +109,4 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 		typePanel.getMessengerPanel().getSpringLayout().putConstraint(SpringLayout.NORTH, typePanel, northOffset, SpringLayout.SOUTH, typePanel.getMessengerPanel());
 		typePanel.revalidate();
 	}
-
 }
