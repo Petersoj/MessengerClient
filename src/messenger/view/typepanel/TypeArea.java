@@ -5,13 +5,12 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import messenger.view.messagepanel.MessagesPanel;
+import messenger.user.users.ServerUser;
 import messenger.view.messagepanel.messagepanels.FilePanel;
 import messenger.view.messagepanel.messagepanels.MessagePanel;
 
@@ -71,37 +70,27 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	public void componentHidden(ComponentEvent e) {}
 	
 	@Override
-	public void keyTyped(KeyEvent e) {
-		JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
-		scrollBar.setValue(scrollBar.getMaximum());
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
 			if(this.getText().equals("file")){
-				MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
-				FilePanel filePanel = new FilePanel(messagesPanel, messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), "taco.jpg");
-				filePanel.revalidate();
-				filePanel.repaint();
-				this.typePanel.getMessengerPanel().getMessagesPanel().add(filePanel);
+				this.typePanel.getMessengerPanel().getMessagesPanel().addFileMessage(new FilePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
+						new ServerUser(this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController(), 12), "poop.jpg"));
 				this.setText("");
 			}else{
-				MessagesPanel messagesPanel = this.typePanel.getMessengerPanel().getMessagesPanel();
 				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
-				this.typePanel.getMessengerPanel().getMessagesPanel().add(messagePanel);
+						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
+				this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
 				this.setText("");
 			}
 		}
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e) {
-		JScrollBar scrollBar = this.typePanel.getMessengerPanel().getMessageScrollPane().getVerticalScrollBar();
-		scrollBar.setValue(scrollBar.getMaximum());
-	}
+	public void keyReleased(KeyEvent e) { }
 	
 	
 	public void updateAttachmentButtonVisiblity(){

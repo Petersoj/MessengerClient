@@ -4,9 +4,10 @@ import java.awt.Color;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import messenger.user.users.ServerUser;
 import messenger.view.MessengerPanel;
+import messenger.view.messagepanel.messagepanels.FilePanel;
 import messenger.view.messagepanel.messagepanels.MessagePanel;
 
 public class MessagesPanel extends JPanel {
@@ -26,19 +27,21 @@ public class MessagesPanel extends JPanel {
 	private void setupPanel(){
 		this.setLayout(boxLayout);
 		this.setBackground(Color.WHITE);
-		
-		this.add(new MessagePanel(this, new ServerUser(messengerPanel.getMessengerFrame().getMessengerController(), 1), "Taco\nas\nasdf\nasdfdfasafdshkjalsdfghjkagsdfkjhgaskdjhfgajkshdfhjasdfghkhgjkdfahgjkfadshgjafdsgjhfsaasjhdfgjkhasgdfjkhgasjkdhdfgh"));
-		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "aco\nas\nasdf\nasdfdfasafds"));
-//		this.add(new MessagePanel(this, new ServerUser(messengerPanel.getMessengerFrame().getMessengerController(), 1), "Taco"));
-//		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "Taco"));
-//		this.add(new MessagePanel(this, new ServerUser(messengerPanel.getMessengerFrame().getMessengerController(), 1), "aco\nas\nasdf\nasdfdfasafds"));
-//		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "Taco"));
-//		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "aco\nas\nasdf\nasdfdfasafds"));
-//		this.add(new MessagePanel(this, new ServerUser(messengerPanel.getMessengerFrame().getMessengerController(), 1), "Taco"));
-//		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "aco\nas\nasdf\nasdfdfasafds"));
-//		this.add(new MessagePanel(this, new ServerUser(messengerPanel.getMessengerFrame().getMessengerController(), 1), "Taco"));
-//		this.add(new MessagePanel(this, messengerPanel.getMessengerFrame().getMessengerController().getClientUser(), "aco\nas\nasdf\nasdfdfasafds"));
-		
+	}
+	
+	public void addMessage(MessagePanel messagePanel){
+		this.add(messagePanel);
+		JScrollPane scrollPane = this.messengerPanel.getMessagesScrollPane();
+		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+		scrollPane.setViewportView(this);
+	}
+	
+	public void addFileMessage(FilePanel filePanel){
+		this.add(filePanel);
+		JScrollPane scrollPane = this.messengerPanel.getMessagesScrollPane();
+		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+		scrollPane.setViewportView(this);
+		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 	
 	public MessengerPanel getMessengerPanel() {

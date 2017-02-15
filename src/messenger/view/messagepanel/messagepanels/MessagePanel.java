@@ -64,7 +64,7 @@ public class MessagePanel extends JPanel {
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
-				preferredSize.setSize(1, nameLabel.getPreferredSize().getHeight() + 35 + messageArea.getPreferredSize().getHeight());
+				updateSizing();
 				/*
 				 Due to limitations in JTextArea, I cannot make it resize according to it's line count and size
 				 I have used a ton of different methods and none of them were successfull
@@ -94,7 +94,7 @@ public class MessagePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.NORTH, messageArea, 10, SpringLayout.SOUTH, nameLabel);
 		if(user instanceof ClientUser){
 			springLayout.putConstraint(SpringLayout.EAST, messageArea, -5, SpringLayout.EAST, nameLabel);
-			if(stringWidth + 50 < messagesPanel.getWidth()){
+			if(stringWidth + 150 < messagesPanel.getWidth()){
 				springLayout.putConstraint(SpringLayout.WEST, messageArea, -stringWidth, SpringLayout.EAST, messageArea);
 			}else{
 				springLayout.putConstraint(SpringLayout.WEST, messageArea, 50, SpringLayout.WEST, this);		
@@ -107,6 +107,10 @@ public class MessagePanel extends JPanel {
 				springLayout.putConstraint(SpringLayout.EAST, messageArea, -50, SpringLayout.EAST, this);
 			}
 		}
+		updateSizing();
+	}
+	
+	public void updateSizing(){
 		this.preferredSize.setSize(1, this.nameLabel.getPreferredSize().getHeight() + 35 + this.messageArea.getPreferredSize().getHeight());
 	}
 	
@@ -128,6 +132,7 @@ public class MessagePanel extends JPanel {
 		
 		g2.setColor(user.getUserColor().getColor());
 		g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
+		updateSizing();
 	}
 	
 	@Override

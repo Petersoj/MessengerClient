@@ -152,6 +152,10 @@ public class DataController {
 		}
 		return System.getProperty("user.dir");
 	}
+	
+	public MessengerController getMessengerController(){
+		return messengerController;
+	}
 
 	public boolean errorOccured() {
 		return errorOccured;
@@ -164,7 +168,6 @@ public class DataController {
 	public String getIPAddress() {
 		return ipAddress;
 	}
-	
 
 	public void setIPAddress(String ipAddress) {
 		this.ipAddress = ipAddress;

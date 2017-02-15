@@ -60,6 +60,7 @@ public class AttachmentButton extends JButton implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setApproveButtonText("Send");
 		fileChooser.setApproveButtonToolTipText("Send a file to others");
 		

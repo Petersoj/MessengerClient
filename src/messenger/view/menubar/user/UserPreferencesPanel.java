@@ -106,7 +106,8 @@ public class UserPreferencesPanel extends JPanel {
 				typedInName = typedInName.substring(0, 20);
 			}
 			this.nameField.setText(typedInName);
-
+			
+			dataController.getMessengerController().getClientUser().setUserName(typedInName);
 			dataController.setUserName(typedInName);
 			dataController.saveData(true);
 			
@@ -124,6 +125,10 @@ public class UserPreferencesPanel extends JPanel {
 	
 	public JTextField getNameField(){
 		return nameField;
+	}
+	
+	public UserImageSelector getUserImageSelector(){
+		return userImageSelector;
 	}
 	
 	

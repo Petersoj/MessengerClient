@@ -18,7 +18,7 @@ public class MessengerPanel extends JPanel {
 	private SpringLayout springLayout;
 	
 	private MessagesPanel messagesPanel;
-	private JScrollPane messageScrollPane;
+	private JScrollPane messagesScrollPane;
 	private TypePanel typePanel;
 	
 	public MessengerPanel(MessengerFrame messengerFrame){
@@ -26,7 +26,7 @@ public class MessengerPanel extends JPanel {
 		this.messengerFrame = messengerFrame;
 		this.springLayout = new SpringLayout();
 		this.messagesPanel = new MessagesPanel(this);
-		this.messageScrollPane = new JScrollPane(messagesPanel);
+		this.messagesScrollPane = new JScrollPane(messagesPanel);
 		this.typePanel = new TypePanel(this);
 		
 		this.setupComponents();
@@ -35,14 +35,14 @@ public class MessengerPanel extends JPanel {
 	}
 	
 	private void setupComponents(){
-		this.messageScrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
-		this.messageScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		this.messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		this.messagesScrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
+		this.messagesScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.messagesScrollPane.setBorder(BorderFactory.createEmptyBorder());
 	}
 	
 	private void setupPanel(){
 		this.setLayout(springLayout);
-		this.add(messageScrollPane);
+		this.add(messagesScrollPane);
 		this.add(typePanel);
 		
 		this.setBackground(Color.WHITE);
@@ -54,10 +54,10 @@ public class MessengerPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, typePanel, 0, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, typePanel, 0, SpringLayout.WEST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, messageScrollPane, 0, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, messageScrollPane, 0, SpringLayout.NORTH, typePanel);
-		springLayout.putConstraint(SpringLayout.EAST, messageScrollPane, 0, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.WEST, messageScrollPane, 0, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, messagesScrollPane, 0, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, messagesScrollPane, 0, SpringLayout.NORTH, typePanel);
+		springLayout.putConstraint(SpringLayout.EAST, messagesScrollPane, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.WEST, messagesScrollPane, 0, SpringLayout.WEST, this);
 	}
 
 	public MessengerFrame getMessengerFrame() {
@@ -76,7 +76,7 @@ public class MessengerPanel extends JPanel {
 		return typePanel;
 	}
 	
-	public JScrollPane getMessageScrollPane(){
-		return messageScrollPane;
+	public JScrollPane getMessagesScrollPane(){
+		return messagesScrollPane;
 	}
 }

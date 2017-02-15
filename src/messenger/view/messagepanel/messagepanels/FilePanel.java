@@ -37,7 +37,7 @@ public class FilePanel extends JPanel {
 		this.preferredSize = new Dimension(0, 0);
 		this.springLayout = new SpringLayout();
 		this.nameLabel = new JLabel(user.getUserName());
-		this.fileButton = new FileButton(messagesPanel, fileName);
+		this.fileButton = new FileButton(messagesPanel, fileName, user.getUserColor());
 		
 		this.setupComponents();
 		this.setupPanel();
@@ -55,7 +55,7 @@ public class FilePanel extends JPanel {
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
-				resizeFileButton();
+				updateSizing();
 			}
 			
 			public void componentMoved(ComponentEvent e) {}
@@ -78,20 +78,19 @@ public class FilePanel extends JPanel {
 		
 		springLayout.putConstraint(SpringLayout.NORTH, fileButton, 10, SpringLayout.SOUTH, nameLabel);
 		if(user instanceof ClientUser){
-			springLayout.putConstraint(SpringLayout.SOUTH, fileButton, 156, SpringLayout.SOUTH, nameLabel);
+			springLayout.putConstraint(SpringLayout.SOUTH, fileButton, 200, SpringLayout.NORTH, fileButton);
 			springLayout.putConstraint(SpringLayout.EAST, fileButton, 0, SpringLayout.EAST, nameLabel);
-			springLayout.putConstraint(SpringLayout.WEST, fileButton, -156, SpringLayout.EAST, fileButton);
+			springLayout.putConstraint(SpringLayout.WEST, fileButton, -200, SpringLayout.EAST, fileButton);
 		}else{
-			springLayout.putConstraint(SpringLayout.SOUTH, fileButton, 200, SpringLayout.SOUTH, nameLabel);
+			springLayout.putConstraint(SpringLayout.SOUTH, fileButton, 200, SpringLayout.NORTH, fileButton);
 			springLayout.putConstraint(SpringLayout.WEST, fileButton, 5, SpringLayout.WEST, nameLabel);
+			springLayout.putConstraint(SpringLayout.EAST, fileButton, 200, SpringLayout.WEST, fileButton);
 		}
-		resizeFileButton();
+		updateSizing();
 	}
 	
-	private void resizeFileButton(){
-		int height = this.nameLabel.getHeight() + this.fileButton.getHeight();
-		
-		this.preferredSize.setSize(1, height);
+	private void updateSizing(){
+		this.preferredSize.setSize(1, this.nameLabel.getPreferredSize().getHeight() + 35 + this.fileButton.getPreferredSize().getHeight());
 	}
 	
 	@Override
@@ -107,6 +106,7 @@ public class FilePanel extends JPanel {
 		}else{
 			g2.drawImage(image, 5, nameLabel.getHeight(), 55, nameLabel.getHeight() + 50, 0, 0, image.getWidth(), image.getHeight(), null);
 		}
+		updateSizing();
 	}
 	
 	@Override

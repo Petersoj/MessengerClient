@@ -33,8 +33,6 @@ public class MessengerController {
 		
 	}
 	
-	
-	
 	public Debug getDebug() {
 		return debug;
 	}

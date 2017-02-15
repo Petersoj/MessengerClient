@@ -15,6 +15,7 @@ import javax.swing.JFileChooser;
 
 import messenger.controller.DataController;
 import messenger.controller.MessengerController;
+import messenger.util.MessengerColor;
 import messenger.util.Utils;
 import messenger.view.menubar.user.UserPreferencesPanel;
 
@@ -22,11 +23,12 @@ public class UserImageSelector extends JButton implements ActionListener {
 	
 	private UserPreferencesPanel userPreferencesPanel;
 	
-	private Color grayedOver;
+	private Color userColor;
 	
 	public UserImageSelector(UserPreferencesPanel userPreferencesPanel){
 		this.userPreferencesPanel = userPreferencesPanel;
-		this.grayedOver = new Color(230, 230, 230, 150);
+		this.userColor = userPreferencesPanel.getUserPreferencesDialog().getMessengerPanel()
+				.getMessengerFrame().getMessengerController().getClientUser().getUserColor().applyAlpha(150);
 		this.setupImageSelector();
 	}
 	
@@ -54,10 +56,10 @@ public class UserImageSelector extends JButton implements ActionListener {
 		g2.drawImage(userIcon, 0, 0, this.getWidth(), this.getHeight(), 0, 0, userIcon.getWidth(), userIcon.getHeight(), null);
 		
 		if(this.getModel().isRollover()){
-			g2.setColor(grayedOver);
+			g2.setColor(userColor);
 			g2.fillOval(0, 0, this.getWidth(), this.getHeight());
 			
-			g2.setColor(Color.BLACK);
+			g2.setColor(Color.WHITE);
 			g2.setFont(dataController.getVerdanaFont());
 			Utils.drawCenteredText(g2, "Click to Change", this.getWidth(), this.getHeight());
 		}
@@ -81,13 +83,18 @@ public class UserImageSelector extends JButton implements ActionListener {
 			if(fileName.endsWith(".jpg") || fileName.endsWith(".png")){
 				try {
 					BufferedImage userImage = ImageIO.read(selectedFile);
+					messengerController.getClientUser().setUserImage(userImage);
 					messengerController.getDataController().setUserIcon(userImage);
 					messengerController.getDataController().saveData(false);
 					repaint();
 				} catch (Exception error) {
-					messengerController.getDebug().presentError("Choosing a file!", error);
+					messengerController.getDebug().presentError("Error choosing a file!", error);
 				}
 			}
 		}
+	}
+	
+	public void setUserColor(MessengerColor color){
+		this.userColor = color.applyAlpha(150);
 	}
 }

@@ -2,6 +2,7 @@ package messenger.view.messagepanel.messagepanels.components;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,6 +14,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 
 import messenger.controller.DataController;
+import messenger.util.MessengerColor;
 import messenger.util.Utils;
 import messenger.view.messagepanel.MessagesPanel;
 
@@ -20,15 +22,17 @@ public class FileButton extends JButton implements ActionListener {
 	
 	private MessagesPanel messagesPanel;
 	
+	private Dimension preferredSize;
 	private String fileName;
-	private Color grayedOver;
+	private Color userColor;
 	
-	public FileButton(MessagesPanel messagesPanel, String fileName){
+	public FileButton(MessagesPanel messagesPanel, String fileName, MessengerColor userColor){
 		super();
 		
 		this.messagesPanel = messagesPanel;
+		this.preferredSize = new Dimension(0, 0);
 		this.fileName = fileName;
-		this.grayedOver = new Color(130, 130, 130, 150);
+		this.userColor = userColor.applyAlpha(130);
 		
 		this.setupComponent();
 	}
@@ -44,6 +48,8 @@ public class FileButton extends JButton implements ActionListener {
 		this.setContentAreaFilled(false);
 		
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		this.preferredSize.setSize(200, 200);
 	}
 	
 	@Override
@@ -68,7 +74,7 @@ public class FileButton extends JButton implements ActionListener {
 		
 		if(this.getModel().isRollover()){
 			RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 30, 30);
-			g2.setColor(grayedOver);
+			g2.setColor(userColor);
 			g2.fill(roundRectangle);
 			
 			g2.setColor(Color.WHITE);
@@ -79,6 +85,11 @@ public class FileButton extends JButton implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return preferredSize;
 	}
 	
 	public String getFileName(){

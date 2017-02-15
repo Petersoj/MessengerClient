@@ -116,6 +116,7 @@ public class ConnectOptionPanel extends JPanel {
 		});
 		
 		this.connectButton.addActionListener((e) -> {
+			connectOptionDialog.dispose();
 			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
 		});
 	}
