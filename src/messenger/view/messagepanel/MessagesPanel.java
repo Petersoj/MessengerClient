@@ -32,14 +32,13 @@ public class MessagesPanel extends JPanel {
 	public void addMessage(MessagePanel messagePanel){
 		this.add(messagePanel);
 		JScrollPane scrollPane = this.messengerPanel.getMessagesScrollPane();
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 		scrollPane.setViewportView(this);
+		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
 	
 	public void addFileMessage(FilePanel filePanel){
 		this.add(filePanel);
 		JScrollPane scrollPane = this.messengerPanel.getMessagesScrollPane();
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 		scrollPane.setViewportView(this);
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
