@@ -59,6 +59,15 @@ public class Utils {
 		}
 	}
 	
+	public static BufferedImage getNewResizedImage(BufferedImage image, int width, int height){
+		BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = resized.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
+		g2.dispose();
+		return resized;
+	}
+	
 	public static BufferedImage drawRoundedSquareImage(BufferedImage image, int size){
 		BufferedImage rounded = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = rounded.createGraphics();
