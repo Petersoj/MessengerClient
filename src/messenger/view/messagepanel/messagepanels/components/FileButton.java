@@ -60,8 +60,9 @@ public class FileButton extends JButton implements ActionListener {
 		DataController dataController = messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
 		BufferedImage image = dataController.getFileImage();
-		int size = Math.min(this.getHeight() - 10, image.getHeight());
-		g2.drawImage(image, 0, 10, this.getWidth(), size, 0, 0, image.getWidth(), image.getHeight(), null);
+		System.out.println(this.getWidth());
+		System.out.println(this.getHeight());
+		g2.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), 0, 0, image.getWidth(), image.getHeight(), null);
 		
 		g2.setFont(dataController.getVerdanaFont());
 		
