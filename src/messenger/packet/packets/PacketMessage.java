@@ -12,6 +12,10 @@ public class PacketMessage extends Packet {
 	
 	private int userID;
 	private String message;
+	
+	public PacketMessage() {
+		super(PacketType.MESSAGE);
+	}
 
 	public PacketMessage(PacketMessageType packetMessageType) {
 		super(PacketType.MESSAGE);
@@ -22,6 +26,7 @@ public class PacketMessage extends Packet {
 	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
 		super.writeContent(dataOutputStream);
 		dataOutputStream.writeUTF(packetMessageType.toString());
+		
 		if(packetMessageType == PacketMessageType.MESSAGE){
 			dataOutputStream.writeUTF(message);
 		}
@@ -31,6 +36,7 @@ public class PacketMessage extends Packet {
 	public void readContent(DataInputStream dataInputStream) throws IOException{
 		super.readContent(dataInputStream);
 		this.packetMessageType = PacketMessageType.valueOf(dataInputStream.readUTF());
+		
 		this.userID = dataInputStream.readInt();
 		if(packetMessageType == PacketMessageType.MESSAGE){
 			this.message = dataInputStream.readUTF();
@@ -59,6 +65,6 @@ public class PacketMessage extends Packet {
 	}
 
 	public enum PacketMessageType {
-		MESSAGE, FILE_NOTIFIER, IMAGE_NOTIFIER;
+		MESSAGE, FILE_NOTIFIER;
 	}
 }

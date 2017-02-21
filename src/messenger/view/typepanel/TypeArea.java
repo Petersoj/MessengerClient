@@ -78,15 +78,19 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 			e.consume();
 			if(this.getText().equals("file")){
 				this.typePanel.getMessengerPanel().getMessagesPanel().addFileMessage(new FilePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						new ServerUser(this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController(), 12), "poop.jpg"));
+						new ServerUser(this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController(), 12), "poopasfdsssssa.jpg"));
 				this.setText("");
 			}else if(this.getText().equals("filec")){
 				this.typePanel.getMessengerPanel().getMessagesPanel().addFileMessage(new FilePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), "poop.jpg"));
+						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), "poopasdfadsfdfsadfsadsafadsfasdf.jpg"));
 				this.setText("");
 			}else{
 				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
+						null, this.getText());
+				/*
+				 * MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
 						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
+				 */
 				this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
 				this.setText("");
 			}

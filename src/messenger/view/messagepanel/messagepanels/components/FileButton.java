@@ -26,13 +26,15 @@ public class FileButton extends JButton implements ActionListener {
 	private String fileName;
 	private Color userColor;
 	
-	public FileButton(MessagesPanel messagesPanel, String fileName, MessengerColor userColor){
+	public FileButton(MessagesPanel messagesPanel, String fileName, MessengerColor userColor, boolean highlight){
 		super();
 		
 		this.messagesPanel = messagesPanel;
 		this.preferredSize = new Dimension(0, 0);
 		this.fileName = fileName;
-		this.userColor = userColor.applyAlpha(130);
+		if(highlight){
+			this.userColor = userColor.applyAlpha(130);
+		}
 		
 		this.setupComponent();
 	}
@@ -67,13 +69,25 @@ public class FileButton extends JButton implements ActionListener {
 		g2.setFont(dataController.getVerdanaFont());
 		
 		FontMetrics fontMetrics = g2.getFontMetrics();
-		int x = (this.getWidth() - fontMetrics.stringWidth(fileName)) / 2;
+		
+		String newFileName = fileName;
+		int stringWidth = fontMetrics.stringWidth(newFileName);
+		int x = 0;
 		int y = this.getHeight() - 30;
+		if(stringWidth > 120){
+			try{
+				String[] listBetweenDots = fileName.split("\\.");
+				String fileExtension = listBetweenDots[listBetweenDots.length - 1];
+				newFileName = fileName.substring(0, 3) + "..." + 
+						fileName.substring(fileName.length() - fileExtension.length() - 4, fileName.length() - fileExtension.length() - 1) + "." + fileExtension;
+			}catch(Exception e){ } // Just incase above fails...
+		}
+		x = (this.getWidth() - fontMetrics.stringWidth(newFileName)) / 2;
 		
 		g2.setColor(Color.BLACK);
-		g2.drawString(fileName, x, y);
+		g2.drawString(newFileName, x, y);
 		
-		if(this.getModel().isRollover()){
+		if(this.getModel().isRollover() && userColor != null){
 			RoundRectangle2D roundRectangle = new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 30, 30);
 			g2.setColor(userColor);
 			g2.fill(roundRectangle);

@@ -18,6 +18,7 @@ import javax.swing.SpringLayout;
 import messenger.controller.DataController;
 import messenger.user.User;
 import messenger.user.users.ClientUser;
+import messenger.util.MessengerColor;
 import messenger.util.Utils;
 import messenger.view.messagepanel.MessagesPanel;
 
@@ -35,7 +36,11 @@ public class MessagePanel extends JPanel {
 		this.messagesPanel = messagesPanel;
 		
 		this.user = user;
-		this.nameLabel = new JLabel(user.getUserName());
+		if(user == null){
+			this.nameLabel = new JLabel("Info");
+		}else{
+			this.nameLabel = new JLabel(user.getUserName());
+		}
 		this.messageArea = new JTextArea(message);
 		this.springLayout = new SpringLayout();
 		
@@ -84,7 +89,7 @@ public class MessagePanel extends JPanel {
 	
 	private void setupLayout(){
 		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 5, SpringLayout.NORTH, this);
-		if (user instanceof ClientUser) {
+		if (user == null || user instanceof ClientUser) {
 			springLayout.putConstraint(SpringLayout.EAST, nameLabel, -65, SpringLayout.EAST, this);
 		}else{
 			springLayout.putConstraint(SpringLayout.WEST, nameLabel, 65, SpringLayout.WEST, this);
@@ -92,7 +97,7 @@ public class MessagePanel extends JPanel {
 		
 		int stringWidth = messageArea.getFontMetrics(messageArea.getFont()).stringWidth(messageArea.getText());
 		springLayout.putConstraint(SpringLayout.NORTH, messageArea, 10, SpringLayout.SOUTH, nameLabel);
-		if(user instanceof ClientUser){
+		if(user == null || user instanceof ClientUser){
 			springLayout.putConstraint(SpringLayout.EAST, messageArea, -5, SpringLayout.EAST, nameLabel);
 			if(stringWidth + 150 < messagesPanel.getWidth()){
 				springLayout.putConstraint(SpringLayout.WEST, messageArea, -stringWidth, SpringLayout.EAST, messageArea);
@@ -120,8 +125,14 @@ public class MessagePanel extends JPanel {
 		
 		Graphics2D g2 = Utils.getChangedGraphics2D(g);
 		
-		BufferedImage image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
-		if(user instanceof ClientUser){
+		BufferedImage image;
+		if(user == null){
+			image = Utils.drawRoundedSquareImage(messagesPanel.getMessengerPanel().getMessengerFrame()
+					.getMessengerController().getDataController().getMessengerIcon(), 50);
+		}else{
+			image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
+		}
+		if(user == null || user instanceof ClientUser){
 			g2.drawImage(image, this.getWidth() - 5, nameLabel.getHeight(), this.getWidth() - 55, nameLabel.getHeight() + 50,
 					0, 0, image.getWidth(), image.getHeight(), null);
 		}else{
@@ -130,7 +141,11 @@ public class MessagePanel extends JPanel {
 		
 		Rectangle messageBounds = messageArea.getBounds();
 		
-		g2.setColor(user.getUserColor().getColor());
+		if(user == null){
+			g2.setColor(MessengerColor.GREEN.getColor());
+		}else{
+			g2.setColor(user.getUserColor().getColor());
+		}
 		g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
 		updateSizing();
 	}

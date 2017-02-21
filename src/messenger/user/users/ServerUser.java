@@ -15,7 +15,6 @@ public class ServerUser extends User {
 		super.setUserColor(MessengerColor.BLUE);
 		super.setUserImage(messengerController.getDataController().getUserIcon());
 	}
-
 	
 	public int getUserID() {
 		return userID;

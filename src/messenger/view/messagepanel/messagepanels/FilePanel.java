@@ -16,6 +16,7 @@ import javax.swing.SpringLayout;
 import messenger.controller.DataController;
 import messenger.user.User;
 import messenger.user.users.ClientUser;
+import messenger.user.users.ServerUser;
 import messenger.util.Utils;
 import messenger.view.messagepanel.MessagesPanel;
 import messenger.view.messagepanel.messagepanels.components.FileButton;
@@ -37,7 +38,7 @@ public class FilePanel extends JPanel {
 		this.preferredSize = new Dimension(0, 0);
 		this.springLayout = new SpringLayout();
 		this.nameLabel = new JLabel(user.getUserName());
-		this.fileButton = new FileButton(messagesPanel, fileName, user.getUserColor());
+		this.fileButton = new FileButton(messagesPanel, fileName, user.getUserColor(), user instanceof ServerUser);
 		
 		this.setupComponents();
 		this.setupPanel();
