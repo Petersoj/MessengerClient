@@ -1,6 +1,8 @@
 package messenger.view.messagepanel;
 
 import java.awt.Color;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -22,6 +24,22 @@ public class MessagesPanel extends JPanel {
 		this.boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		
 		this.setupPanel();
+		
+		this.addComponentListener(new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent e) { }
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				JScrollPane scrollPane = messengerPanel.getMessagesScrollPane();
+				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) { }
+			@Override
+			public void componentHidden(ComponentEvent e) { }
+		});
 	}
 	
 	private void setupPanel(){

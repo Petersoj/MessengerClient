@@ -86,7 +86,7 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 				this.setText("");
 			}else{
 				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						null, this.getText());
+						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
 				/*
 				 * MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
 						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
