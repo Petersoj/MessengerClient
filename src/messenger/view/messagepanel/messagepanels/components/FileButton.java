@@ -42,14 +42,16 @@ public class FileButton extends JButton implements ActionListener {
 	private void setupComponent(){
 		this.addActionListener(this);
 		
-		this.setRolloverEnabled(true);
+		if(this.userColor != null){
+			this.setRolloverEnabled(true);
+			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		}
 		
 		this.setOpaque(false);
 		this.setFocusPainted(false);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		
-		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 		this.preferredSize.setSize(200, 200);
 	}
@@ -62,8 +64,6 @@ public class FileButton extends JButton implements ActionListener {
 		DataController dataController = messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
 		BufferedImage image = dataController.getFileImage();
-		System.out.println(this.getWidth());
-		System.out.println(this.getHeight());
 		g2.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), 0, 0, image.getWidth(), image.getHeight(), null);
 		
 		g2.setFont(dataController.getVerdanaFont());

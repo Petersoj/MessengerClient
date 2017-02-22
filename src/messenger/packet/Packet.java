@@ -13,12 +13,10 @@ public abstract class Packet {
 	}
 	
 	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
-		dataOutputStream.writeUTF(packetType.toString());
+		dataOutputStream.writeUTF(packetType.name());
 	}
 	
-	public void readContent(DataInputStream dataInputStream) throws IOException{
-		this.packetType = PacketType.valueOf(dataInputStream.readUTF());
-	}
+	public abstract void readContent(DataInputStream dataInputStream) throws IOException;
 	
 	public PacketType getPacketType() {
 		return packetType;

@@ -25,7 +25,7 @@ public class PacketMessage extends Packet {
 	@Override
 	public void writeContent(DataOutputStream dataOutputStream) throws IOException{
 		super.writeContent(dataOutputStream);
-		dataOutputStream.writeUTF(packetMessageType.toString());
+		dataOutputStream.writeUTF(packetMessageType.name());
 		
 		if(packetMessageType == PacketMessageType.MESSAGE){
 			dataOutputStream.writeUTF(message);
@@ -34,7 +34,6 @@ public class PacketMessage extends Packet {
 
 	@Override
 	public void readContent(DataInputStream dataInputStream) throws IOException{
-		super.readContent(dataInputStream);
 		this.packetMessageType = PacketMessageType.valueOf(dataInputStream.readUTF());
 		
 		this.userID = dataInputStream.readInt();

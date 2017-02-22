@@ -78,7 +78,7 @@ public class Utils {
 		Area area = new Area(new Rectangle2D.Float(0, 0, size, size));
 		area.subtract(new Area(new Ellipse2D.Float(0, 0, size, size)));
 
-		g2.drawImage(image, 0, 0, size, size, 0, 0, image.getWidth(), image.getHeight(), null);
+		g2.drawImage(image, 0, 0, rounded.getWidth(), rounded.getHeight(), 0, 0, image.getWidth(), image.getHeight(), null);
 		g2.setComposite(AlphaComposite.Clear);
 		g2.fill(area);
 

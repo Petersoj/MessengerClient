@@ -132,8 +132,9 @@ public class MessagePanel extends JPanel {
 		}else{
 			image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
 		}
+		
 		if(user == null || user instanceof ClientUser){
-			g2.drawImage(image, this.getWidth() - 5, nameLabel.getHeight(), this.getWidth() - 55, nameLabel.getHeight() + 50,
+			g2.drawImage(image,  this.getWidth() - 55, nameLabel.getHeight(), this.getWidth() - 5, nameLabel.getHeight() + 50,
 					0, 0, image.getWidth(), image.getHeight(), null);
 		}else{
 			g2.drawImage(image, 5, nameLabel.getHeight(), 55, nameLabel.getHeight() + 50, 0, 0, image.getWidth(), image.getHeight(), null);
