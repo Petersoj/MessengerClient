@@ -11,7 +11,7 @@ public class ServerUser extends User {
 	public ServerUser(MessengerController messengerController, int userID){
 		super(messengerController);
 		this.userID = userID;
-		super.setUserName("SOME SERVER USER");
+		super.setUserName("Server User");
 		super.setUserColor(MessengerColor.BLUE);
 		super.setUserImage(messengerController.getDataController().getUserIcon());
 	}

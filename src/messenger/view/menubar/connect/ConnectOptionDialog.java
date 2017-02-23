@@ -35,7 +35,7 @@ public class ConnectOptionDialog extends JDialog {
 	
 	public void prepareDialog(){ // Called everytime before visible
 		this.setSize(400, 170);
-		this.setMaximumSize(new Dimension(450, 250));
+		this.setMaximumSize(new Dimension(400, 170));
 		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 		
 		this.connectOptionPanel.getIPAddressLabel().requestFocusInWindow(); // Prevents text field from being autoFocused

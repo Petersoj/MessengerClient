@@ -24,7 +24,7 @@ public class AboutDialog extends JDialog {
 	
 	public void setupDialog(){
 		this.setContentPane(aboutPanel);
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setAutoRequestFocus(true);
 		
 		this.getRootPane().registerKeyboardAction(e -> this.dispose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);

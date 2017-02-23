@@ -31,15 +31,14 @@ public class MessengerFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.setTitle("Messenger");
-		this.setSize(800, 600);
-		this.setMinimumSize(new Dimension(350, 300));
-		this.setLocationRelativeTo(null); // Centers the frame
 		this.setIconImage(messengerController.getDataController().getMessengerIcon());
-		
 		this.setJMenuBar(messengerMenuBar);
 		
 		this.setContentPane(messengerPanel); // after sizing so validate doesn't get called last seconds.
-		
+		this.pack();
+		this.setSize(800, 600);
+		this.setMinimumSize(new Dimension(350, 300));
+		this.setLocationRelativeTo(null); // Centers the frame
 		this.setVisible(true);
 		
 		this.revalidate(); // Was having some weird issues with the typePanel not being the given size. This fixed it.

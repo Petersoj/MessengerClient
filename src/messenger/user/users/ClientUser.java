@@ -32,8 +32,21 @@ public class ClientUser extends User {
 	public ClientUserConnection getClientUserConnection() {
 		return clientUserConnection;
 	}
-
-	public ArrayList<ServerUser> getServerUsers() {
-		return serverUsers;
+	
+	public void addServerUser(ServerUser serverUser){
+		this.serverUsers.add(serverUser);
+	}
+	
+	public void removeServerUser(ServerUser serverUser){
+		this.serverUsers.remove(serverUser);
+	}
+	
+	public ServerUser getServerByID(int userID){
+		for(ServerUser serverUser : serverUsers){
+			if(serverUser.getUserID() == userID){
+				return serverUser;
+			}
+		}
+		return null;
 	}
 }

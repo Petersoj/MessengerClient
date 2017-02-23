@@ -73,9 +73,9 @@ public class UserPreferencesPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, nameField, 200, SpringLayout.EAST, nameLabel);
 		
 		springLayout.putConstraint(SpringLayout.NORTH, userColorPanel, -60, SpringLayout.SOUTH, userImageSelector);
-		springLayout.putConstraint(SpringLayout.SOUTH, userColorPanel, -30, SpringLayout.SOUTH, userImageSelector);
-		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 0, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, userColorPanel, 30, SpringLayout.NORTH, userColorPanel);
 		springLayout.putConstraint(SpringLayout.WEST, userColorPanel, 0, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 300, SpringLayout.WEST, userColorPanel);
 	}
 	
 	private void setupListeners(){

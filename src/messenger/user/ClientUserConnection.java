@@ -62,13 +62,13 @@ public class ClientUserConnection extends Thread {
 				}
 			}catch(Exception e){
 				clientUser.getMessengerController().getDebug().presentError("Reading inside while", e);
-				this.close(false);
+				this.close();
 			}
 		}
-		this.close(false);
+		this.close();
 	}
 	
-	public void close(boolean clientClosed){
+	public void close(){
 		try{
 			if(socket != null && socket.isConnected()){
 				dataOutputStream.close();
@@ -79,6 +79,4 @@ public class ClientUserConnection extends Thread {
 			clientUser.getMessengerController().getDebug().presentError("Closing Connection", e);
 		}
 	}
-	
-
 }

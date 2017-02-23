@@ -4,6 +4,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import messenger.util.Utils;
+
 public class Debug {
 
 	private MessengerController messengerController;
@@ -18,7 +20,7 @@ public class Debug {
 				JOptionPane.showMessageDialog(null, message, title, JOptionPane.CLOSED_OPTION);
 			}else{
 				JOptionPane.showMessageDialog(messengerController.getMessengerFrame(), message, title, JOptionPane.CLOSED_OPTION,
-						new ImageIcon(messengerController.getDataController().getMessengerIcon()));
+						new ImageIcon(Utils.getNewResizedImage(messengerController.getDataController().getMessengerIcon(), 150, 150)));
 			}
 		});
 	}

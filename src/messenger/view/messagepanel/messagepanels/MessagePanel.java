@@ -35,10 +35,8 @@ public class MessagePanel extends JPanel {
 	public MessagePanel(MessagesPanel messagesPanel, User user, String message){
 		this.messagesPanel = messagesPanel;
 		
-		this.user = user;
-		if(user == null){
-			this.nameLabel = new JLabel("Info");
-		}else{
+		if(user != null){
+			this.user = user;
 			this.nameLabel = new JLabel(user.getUserName());
 		}
 		this.messageArea = new JTextArea(message);
@@ -54,13 +52,18 @@ public class MessagePanel extends JPanel {
 	private void setupComponents(){
 		DataController dataController = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
-		this.nameLabel.setFont(dataController.getVerdanaFont().deriveFont(13f));
-		
-		this.messageArea.setOpaque(false);
-		this.messageArea.setEditable(false);
-		this.messageArea.setLineWrap(true);
-		this.messageArea.setWrapStyleWord(true);
-		this.messageArea.setFont(dataController.getVerdanaFont());
+		if(user == null){
+			this.messageArea.setForeground(Color.GRAY);
+			this.messageArea.setFont(dataController.getVerdanaFont().deriveFont(13f));
+		}else{
+			this.nameLabel.setFont(dataController.getVerdanaFont().deriveFont(13f));
+			
+			this.messageArea.setOpaque(false);
+			this.messageArea.setEditable(false);
+			this.messageArea.setLineWrap(true);
+			this.messageArea.setWrapStyleWord(true);
+			this.messageArea.setFont(dataController.getVerdanaFont());
+		}
 	}
 	
 	private void setupPanel(){
@@ -82,72 +85,83 @@ public class MessagePanel extends JPanel {
 		});
 		
 		this.setLayout(springLayout);
-		this.add(nameLabel);
+		if(user != null){
+			this.add(nameLabel);
+		}
 		this.add(messageArea);
 		this.setBackground(Color.WHITE);
 	}
 	
 	private void setupLayout(){
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 5, SpringLayout.NORTH, this);
-		if (user == null || user instanceof ClientUser) {
-			springLayout.putConstraint(SpringLayout.EAST, nameLabel, -65, SpringLayout.EAST, this);
-		}else{
-			springLayout.putConstraint(SpringLayout.WEST, nameLabel, 65, SpringLayout.WEST, this);
+		if(user != null){ //  Name Label constraints
+			springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 5, SpringLayout.NORTH, this);
+			if(user instanceof ClientUser) {
+				springLayout.putConstraint(SpringLayout.EAST, nameLabel, -65, SpringLayout.EAST, this);
+			}else{
+				springLayout.putConstraint(SpringLayout.WEST, nameLabel, 65, SpringLayout.WEST, this);
+			}
 		}
 		
-		int stringWidth = messageArea.getFontMetrics(messageArea.getFont()).stringWidth(messageArea.getText());
-		springLayout.putConstraint(SpringLayout.NORTH, messageArea, 10, SpringLayout.SOUTH, nameLabel);
-		if(user == null || user instanceof ClientUser){
-			springLayout.putConstraint(SpringLayout.EAST, messageArea, -5, SpringLayout.EAST, nameLabel);
-			if(stringWidth + 150 < messagesPanel.getWidth()){
-				springLayout.putConstraint(SpringLayout.WEST, messageArea, -stringWidth, SpringLayout.EAST, messageArea);
+		if(user == null){ // center text area if user is null aka small system message
+			springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, messageArea, 0, SpringLayout.VERTICAL_CENTER, this);
+			springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, messageArea, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		}else{ // text area constraints
+			int stringWidth = messageArea.getFontMetrics(messageArea.getFont()).stringWidth(messageArea.getText());
+			springLayout.putConstraint(SpringLayout.NORTH, messageArea, 10, SpringLayout.SOUTH, nameLabel);
+			if(user instanceof ClientUser){
+				springLayout.putConstraint(SpringLayout.EAST, messageArea, -5, SpringLayout.EAST, nameLabel);
+				if(stringWidth + 150 < messagesPanel.getWidth()){
+					springLayout.putConstraint(SpringLayout.WEST, messageArea, -stringWidth, SpringLayout.EAST, messageArea);
+				}else{
+					springLayout.putConstraint(SpringLayout.WEST, messageArea, 50, SpringLayout.WEST, this);		
+				}
 			}else{
-				springLayout.putConstraint(SpringLayout.WEST, messageArea, 50, SpringLayout.WEST, this);		
-			}
-		}else{
-			springLayout.putConstraint(SpringLayout.WEST, messageArea, 5, SpringLayout.WEST, nameLabel);
-			if(stringWidth + 50 < messagesPanel.getWidth()){
-				springLayout.putConstraint(SpringLayout.EAST, messageArea, stringWidth, SpringLayout.WEST, messageArea);
-			}else{
-				springLayout.putConstraint(SpringLayout.EAST, messageArea, -50, SpringLayout.EAST, this);
+				springLayout.putConstraint(SpringLayout.WEST, messageArea, 5, SpringLayout.WEST, nameLabel);
+				if(stringWidth + 50 < messagesPanel.getWidth()){
+					springLayout.putConstraint(SpringLayout.EAST, messageArea, stringWidth, SpringLayout.WEST, messageArea);
+				}else{
+					springLayout.putConstraint(SpringLayout.EAST, messageArea, -50, SpringLayout.EAST, this);
+				}
 			}
 		}
 		updateSizing();
 	}
 	
 	public void updateSizing(){
-		this.preferredSize.setSize(1, this.nameLabel.getPreferredSize().getHeight() + 35 + this.messageArea.getPreferredSize().getHeight());
+		if(user == null){
+			this.preferredSize.setSize(1, 25 + this.messageArea.getPreferredSize().getHeight());
+		}else{
+			this.preferredSize.setSize(1, this.nameLabel.getPreferredSize().getHeight() + 35 + this.messageArea.getPreferredSize().getHeight());
+		}
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		Graphics2D g2 = Utils.getChangedGraphics2D(g);
-		
-		BufferedImage image;
-		if(user == null){
-			image = Utils.drawRoundedSquareImage(messagesPanel.getMessengerPanel().getMessengerFrame()
-					.getMessengerController().getDataController().getMessengerIcon(), 50);
-		}else{
-			image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
+		if(user != null){
+			
+			Graphics2D g2 = Utils.getChangedGraphics2D(g);
+			
+			BufferedImage image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
+			if(user instanceof ClientUser){
+				g2.drawImage(image,  this.getWidth() - 55, nameLabel.getHeight(), this.getWidth() - 5, nameLabel.getHeight() + 50,
+						0, 0, image.getWidth(), image.getHeight(), null);
+			}else{
+				g2.drawImage(image, 5, nameLabel.getHeight(), 55, nameLabel.getHeight() + 50, 0, 0, image.getWidth(), image.getHeight(), null);
+			}
+			
+			Rectangle messageBounds = messageArea.getBounds();
+			
+			if(user == null){
+				g2.setColor(MessengerColor.GREEN.getColor());
+			}else{
+				g2.setColor(user.getUserColor().getColor());
+			}
+			g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, 
+					messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
+			
 		}
-		
-		if(user == null || user instanceof ClientUser){
-			g2.drawImage(image,  this.getWidth() - 55, nameLabel.getHeight(), this.getWidth() - 5, nameLabel.getHeight() + 50,
-					0, 0, image.getWidth(), image.getHeight(), null);
-		}else{
-			g2.drawImage(image, 5, nameLabel.getHeight(), 55, nameLabel.getHeight() + 50, 0, 0, image.getWidth(), image.getHeight(), null);
-		}
-		
-		Rectangle messageBounds = messageArea.getBounds();
-		
-		if(user == null){
-			g2.setColor(MessengerColor.GREEN.getColor());
-		}else{
-			g2.setColor(user.getUserColor().getColor());
-		}
-		g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
 		updateSizing();
 	}
 	

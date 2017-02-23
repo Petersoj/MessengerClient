@@ -92,7 +92,7 @@ public class MessengerMenuBar extends JMenuBar {
 		 // Lamda expressions :D
 		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
 		this.connectItem.addActionListener((e) -> { 
-			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer(); 
+			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
 		});
 		this.userPreferencesItem.addActionListener((e) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
 		this.aboutItem.addActionListener((e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
@@ -110,6 +110,14 @@ public class MessengerMenuBar extends JMenuBar {
 	            messengerFrame.getMessengerController().getDebug().presentError("Open Link", "There was a problem opening this link.");
 	        }
 	    }
+	}
+	
+	public void toggleConnectMenuText(){
+		if(connectItem.getText().equals("Connect")){
+			connectItem.setText("Disconnect");
+		}else{
+			connectItem.setText("Connect");
+		}
 	}
 	
 	public ConnectOptionDialog getConnectOptionDialog(){

@@ -15,11 +15,13 @@ public class PacketMessage extends Packet {
 	
 	public PacketMessage() {
 		super(PacketType.MESSAGE);
+		this.message = "";
 	}
 
 	public PacketMessage(PacketMessageType packetMessageType) {
 		super(PacketType.MESSAGE);
 		this.packetMessageType = packetMessageType;
+		this.message = "";
 	}
 
 	@Override
@@ -27,9 +29,7 @@ public class PacketMessage extends Packet {
 		super.writeContent(dataOutputStream);
 		dataOutputStream.writeUTF(packetMessageType.name());
 		
-		if(packetMessageType == PacketMessageType.MESSAGE){
-			dataOutputStream.writeUTF(message);
-		}
+		dataOutputStream.writeUTF(message); // If the packetUserType is a File notifier then the filename is the message.
 	}
 
 	@Override
@@ -37,9 +37,7 @@ public class PacketMessage extends Packet {
 		this.packetMessageType = PacketMessageType.valueOf(dataInputStream.readUTF());
 		
 		this.userID = dataInputStream.readInt();
-		if(packetMessageType == PacketMessageType.MESSAGE){
-			this.message = dataInputStream.readUTF();
-		}
+		this.message = dataInputStream.readUTF(); // If the packetUserType is a File notifier then the filename is the message.
 	}
 	
 	
