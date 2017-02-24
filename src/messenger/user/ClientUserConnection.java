@@ -6,11 +6,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import messenger.controller.DataController;
+import messenger.packet.Packet;
 import messenger.packet.Packet.PacketType;
 import messenger.packet.PacketHandler;
 import messenger.packet.packets.PacketFile;
 import messenger.packet.packets.PacketMessage;
 import messenger.packet.packets.PacketUser;
+import messenger.packet.packets.PacketUser.PacketUserType;
 import messenger.user.users.ClientUser;
 
 public class ClientUserConnection extends Thread {
@@ -40,6 +42,22 @@ public class ClientUserConnection extends Thread {
 			clientUser.getMessengerController().getDebug().presentError("Socket connection", e);
 		}
 		
+		if(socket != null && socket.isConnected()){
+			PacketUser userNamePacket = new PacketUser(PacketUserType.USERNAME);
+			userNamePacket.setUserName(clientUser.getUserName());
+			
+			PacketUser userColorPacket = new PacketUser(PacketUserType.COLOR);
+			userColorPacket.setUserColor(clientUser.getUserColor());
+			
+			PacketUser userImagePacket = new PacketUser(PacketUserType.IMAGE_ICON);
+			userImagePacket.setUserImage(clientUser.getUserImage());
+			
+			// !!! Order is Important !!!
+			this.sendPacket(userNamePacket);
+			this.sendPacket(userColorPacket);
+			this.sendPacket(userImagePacket);
+		}
+		
 		while(socket != null && !socket.isClosed() && socket.isConnected()){
 			try{
 				PacketType packetType = PacketType.valueOf(dataInputStream.readUTF()); // The PacketType is always sent first
@@ -66,6 +84,14 @@ public class ClientUserConnection extends Thread {
 			}
 		}
 		this.close();
+	}
+	
+	public void sendPacket(Packet packet){
+		try{
+			packet.writeContent(dataOutputStream);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void close(){

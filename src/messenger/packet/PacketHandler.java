@@ -70,7 +70,6 @@ public class PacketHandler {
 			serverUser.setUserImage(packetUser.getUserImage());
 		}else if(packetUserType == PacketUserType.LEAVE){
 			this.messengerController.getClientUser().removeServerUser(serverUser);
-			
 			MessagesPanel messagesPanel = this.messengerController.getMessengerFrame().getMessengerPanel().getMessagesPanel();
 			messagesPanel.addMessage(new MessagePanel(messagesPanel, null, serverUser.getUserName() + " has left the chat."));
 		}
