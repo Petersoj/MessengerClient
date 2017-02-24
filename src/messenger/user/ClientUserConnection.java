@@ -55,7 +55,7 @@ public class ClientUserConnection extends Thread {
 			// !!! Order is Important !!!
 			this.sendPacket(userNamePacket);
 			this.sendPacket(userColorPacket);
-			this.sendPacket(userImagePacket);
+			//this.sendPacket(userImagePacket);
 		}
 		
 		while(socket != null && !socket.isClosed() && socket.isConnected()){
