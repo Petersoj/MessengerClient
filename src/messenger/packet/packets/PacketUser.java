@@ -22,16 +22,14 @@ public class PacketUser extends Packet {
 	private BufferedImage userImage;
 	
 	public PacketUser() {
-		super(PacketType.USER);
-		this.userName = "";
-		this.userColor = MessengerColor.BLUE;
+		this(PacketUserType.USERNAME);
 	}
 	
 	public PacketUser(PacketUserType packetUserType) {
 		super(PacketType.USER);
 		this.packetUserType = packetUserType;
 		this.userName = "";
-		this.userColor = MessengerColor.BLUE;
+		this.userColor = MessengerColor.RED;
 	}
 
 	@Override

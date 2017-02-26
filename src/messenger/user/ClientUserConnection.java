@@ -14,6 +14,7 @@ import messenger.packet.packets.PacketMessage;
 import messenger.packet.packets.PacketUser;
 import messenger.packet.packets.PacketUser.PacketUserType;
 import messenger.user.users.ClientUser;
+import messenger.util.Utils;
 
 public class ClientUserConnection extends Thread {
 	
@@ -50,7 +51,7 @@ public class ClientUserConnection extends Thread {
 			userColorPacket.setUserColor(clientUser.getUserColor());
 			
 			PacketUser userImagePacket = new PacketUser(PacketUserType.IMAGE_ICON);
-			userImagePacket.setUserImage(clientUser.getUserImage());
+			userImagePacket.setUserImage(Utils.getNewResizedImage(clientUser.getUserImage(), 50, 50)); // The client will only render images at 50x50
 			
 			// !!! Order is Important !!!
 			this.sendPacket(userNamePacket);
@@ -89,6 +90,7 @@ public class ClientUserConnection extends Thread {
 	public void sendPacket(Packet packet){
 		try{
 			packet.writeContent(dataOutputStream);
+			dataOutputStream.flush();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
