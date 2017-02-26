@@ -94,9 +94,9 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
 				 */
 				
-//				PacketMessage packetMessage = new PacketMessage(PacketMessageType.MESSAGE);
-//				packetMessage.setMessage(this.getText());
-//				this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().getClientUserConnection().sendPacket(packetMessage);
+				PacketMessage packetMessage = new PacketMessage(PacketMessageType.MESSAGE);
+				packetMessage.setMessage(this.getText());
+				this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().getClientUserConnection().sendPacket(packetMessage);
 				
 				this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
 				this.setText("");

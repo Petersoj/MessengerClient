@@ -42,7 +42,7 @@ public class ClientUserConnection extends Thread {
 			clientUser.getMessengerController().getDebug().presentError("Socket connection", e);
 		}
 		
-		if(socket != null && socket.isConnected()){
+		if(socket != null && !socket.isClosed() && socket.isConnected()){
 			PacketUser userNamePacket = new PacketUser(PacketUserType.USERNAME);
 			userNamePacket.setUserName(clientUser.getUserName());
 			
@@ -55,7 +55,7 @@ public class ClientUserConnection extends Thread {
 			// !!! Order is Important !!!
 			this.sendPacket(userNamePacket);
 			this.sendPacket(userColorPacket);
-			//this.sendPacket(userImagePacket);
+			this.sendPacket(userImagePacket);
 		}
 		
 		while(socket != null && !socket.isClosed() && socket.isConnected()){

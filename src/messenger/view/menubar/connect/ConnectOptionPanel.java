@@ -156,7 +156,6 @@ public class ConnectOptionPanel extends JPanel {
 			if(portNumber > 25 || portNumber < 65535){
 				dataController.setPort(portNumber);
 				dataController.saveData(true);
-				System.out.println("saved");
 				this.ipAddressLabel.requestFocusInWindow(); // Makes Text field un-focused
 			}
 		}
