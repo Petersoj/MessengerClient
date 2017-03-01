@@ -5,8 +5,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
 import messenger.packet.Packet;
 import messenger.util.MessengerColor;
 import messenger.util.Utils;

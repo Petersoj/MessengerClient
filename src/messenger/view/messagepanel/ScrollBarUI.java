@@ -20,11 +20,11 @@ public class ScrollBarUI extends BasicScrollBarUI {
 	}
 	
 	private JButton createZeroButton() {
-        JButton button = new JButton("zero button");
-        Dimension zeroDim = new Dimension(0,0);
-        button.setPreferredSize(zeroDim);
-        button.setMinimumSize(zeroDim);
-        button.setMaximumSize(zeroDim);
+        JButton button = new JButton();
+        Dimension zero = new Dimension(0,0);
+        button.setPreferredSize(zero);
+        button.setMinimumSize(zero);
+        button.setMaximumSize(zero);
         return button;
     }
 	

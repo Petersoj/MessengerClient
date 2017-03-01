@@ -6,6 +6,7 @@ import java.awt.event.ComponentListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import messenger.view.MessengerPanel;
@@ -31,8 +32,9 @@ public class MessagesPanel extends JPanel {
 			
 			@Override
 			public void componentResized(ComponentEvent e) {
-				JScrollPane scrollPane = messengerPanel.getMessagesScrollPane();
-				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+				JScrollBar scrollBar = messengerPanel.getMessagesScrollPane().getVerticalScrollBar();
+				scrollBar.setValue(scrollBar.getMaximum());
+				scrollBar.setUnitIncrement(scrollBar.getMaximum() / 30);
 			}
 			
 			@Override
