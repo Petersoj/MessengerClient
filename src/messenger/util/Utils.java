@@ -73,7 +73,7 @@ public class Utils {
 		Graphics2D g2 = rounded.createGraphics();
 
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(Color.black);
+		g2.setColor(Color.BLACK);
 
 		Area area = new Area(new Rectangle2D.Float(0, 0, size, size));
 		area.subtract(new Area(new Ellipse2D.Float(0, 0, size, size)));
