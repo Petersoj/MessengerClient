@@ -43,8 +43,7 @@ public class AboutPanel extends JPanel {
 		this.titleLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		String aboutText = "This application was developed by Jacob Peterson (me) for the 2017 AP Computer Science Create task. "
-				+ "You can send and receive messages, pictures that render in frame, and other files that can be downloaded. "
-				+ "This is super awesome. Yeah I know.";
+				+ "It is a simple, yet elegant way to send and recieve messages with an attached user name and color. Yeah I know, awesome :P";
 
 		this.aboutTextArea.setOpaque(false);
 		this.aboutTextArea.setEditable(false);
