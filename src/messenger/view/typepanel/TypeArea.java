@@ -10,7 +10,8 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import messenger.util.MessengerColor;
+import messenger.controller.DataController;
+import messenger.packet.PacketMessage;
 import messenger.view.messagepanel.MessagePanel;
 
 public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
@@ -76,7 +77,14 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
 			
-			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(), "taco", MessengerColor.BLUE, this.getText(), false);
+			DataController dataController = this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
+			
+			PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), this.getText());
+			this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController()
+				.getClientUser().getClientUserConnection().sendPacketMessage(packetMessage);
+			
+			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(), 
+					dataController.getUserName(), dataController.getUserColor(), this.getText(), true);
 			this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
 			
 			this.setText("");

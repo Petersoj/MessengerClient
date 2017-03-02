@@ -14,8 +14,18 @@ public class PacketHandler {
 	
 	public void handlePacketMessage(PacketMessage packetMessage){
 		MessagesPanel messagesPanel = messengerController.getMessengerFrame().getMessengerPanel().getMessagesPanel();
-		MessagePanel messagePanel = new MessagePanel(messagesPanel, packetMessage.getUserName(),
-				packetMessage.getUserColor(), packetMessage.getMessage(), false);
+		MessagePanel messagePanel;
+		
+		String message = packetMessage.getMessage();
+		
+		if(message.equals("server-userjoin")){
+			messagePanel = new MessagePanel(messagesPanel, "\'" + packetMessage.getUserName() + "\' has joined the chat.");
+		}else if(message.equals("server-userleave")){
+			messagePanel = new MessagePanel(messagesPanel, "\'" + packetMessage.getUserName() + "\' has left the chat.");
+		}else{
+			messagePanel = new MessagePanel(messagesPanel, packetMessage.getUserName(),
+					packetMessage.getUserColor(), packetMessage.getMessage(), false);
+		}
 		messagesPanel.addMessage(messagePanel);
 	}
 	

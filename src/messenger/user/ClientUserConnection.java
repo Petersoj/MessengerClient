@@ -37,7 +37,7 @@ public class ClientUserConnection extends Thread {
 		}
 		
 		if(socket != null && !socket.isClosed() && socket.isConnected()){
-			PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), "bonjour");
+			PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), "bonjour!");
 			try {
 				packetMessage.writeContent(dataOutputStream); // send our initial data to the server.
 			}catch(Exception e) {
@@ -58,6 +58,14 @@ public class ClientUserConnection extends Thread {
 			}
 		}
 		this.close();
+	}
+	
+	public void sendPacketMessage(PacketMessage packetMessage){
+		try {
+			packetMessage.writeContent(dataOutputStream);
+		}catch(Exception e) {
+			clientUser.getMessengerController().getDebug().presentError("Sending packet", e);
+		}
 	}
 	
 	public void close(){
