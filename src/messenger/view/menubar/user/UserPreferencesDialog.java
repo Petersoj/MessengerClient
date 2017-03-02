@@ -1,6 +1,5 @@
 package messenger.view.menubar.user;
 
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
@@ -34,8 +33,7 @@ public class UserPreferencesDialog extends JDialog {
 	}
 	
 	public void prepareDialog(){ // Called everytime before visible
-		this.setSize(550, 230);
-		this.setMaximumSize(new Dimension(650, 330));
+		this.setSize(450, 200);
 		this.setLocationRelativeTo(messengerPanel.getMessengerFrame());
 		
 		this.userPreferencesPanel.getNameLabel().requestFocusInWindow(); // Prevents text field from being autoFocused

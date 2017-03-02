@@ -11,14 +11,12 @@ import javax.swing.SpringLayout;
 
 import messenger.controller.DataController;
 import messenger.view.menubar.user.components.UserColorPanel;
-import messenger.view.menubar.user.components.UserImageSelector;
 
 public class UserPreferencesPanel extends JPanel {
 	
 	private UserPreferencesDialog userPreferencesDialog;
 	
 	private SpringLayout springLayout;
-	private UserImageSelector userImageSelector;
 	private JLabel nameLabel;
 	private JTextField nameField;
 	private UserColorPanel userColorPanel;
@@ -27,7 +25,6 @@ public class UserPreferencesPanel extends JPanel {
 		super();
 		this.userPreferencesDialog = userPreferencesDialog;
 		this.springLayout = new SpringLayout();
-		this.userImageSelector = new UserImageSelector(this);
 		this.nameLabel = new JLabel("Name:");
 		this.nameField = new JTextField();
 		this.userColorPanel = new UserColorPanel(this);
@@ -51,7 +48,6 @@ public class UserPreferencesPanel extends JPanel {
 	
 	private void setupPanel(){
 		this.setLayout(springLayout);
-		this.add(userImageSelector);
 		this.add(nameLabel);
 		this.add(nameField);
 		this.add(userColorPanel);
@@ -59,23 +55,17 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	private void setupLayout(){
-		springLayout.putConstraint(SpringLayout.NORTH, userImageSelector, 30, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, userImageSelector, 180, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, userImageSelector, 180, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.WEST, userImageSelector, 30, SpringLayout.WEST, this);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 30, SpringLayout.NORTH, userImageSelector);
-		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 50, SpringLayout.EAST, userImageSelector);
-		springLayout.putConstraint(SpringLayout.EAST, nameLabel, 65, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 50, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, nameLabel, 50, SpringLayout.WEST, this);
 		
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, nameField, 0, SpringLayout.VERTICAL_CENTER, nameLabel);
-		springLayout.putConstraint(SpringLayout.WEST, nameField, 0, SpringLayout.EAST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, nameField, 200, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.WEST, nameField, 20, SpringLayout.EAST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, nameField, -50, SpringLayout.EAST, this);
 		
-		springLayout.putConstraint(SpringLayout.NORTH, userColorPanel, -60, SpringLayout.SOUTH, userImageSelector);
-		springLayout.putConstraint(SpringLayout.SOUTH, userColorPanel, 30, SpringLayout.NORTH, userColorPanel);
-		springLayout.putConstraint(SpringLayout.WEST, userColorPanel, 0, SpringLayout.WEST, nameLabel);
-		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 300, SpringLayout.WEST, userColorPanel);
+		springLayout.putConstraint(SpringLayout.NORTH, userColorPanel, 30, SpringLayout.SOUTH, nameLabel);
+		springLayout.putConstraint(SpringLayout.SOUTH, userColorPanel, 40, SpringLayout.NORTH, userColorPanel);
+		springLayout.putConstraint(SpringLayout.WEST, userColorPanel, 30, SpringLayout.WEST, nameLabel);
+		springLayout.putConstraint(SpringLayout.EAST, userColorPanel, 0, SpringLayout.EAST, nameField);
 	}
 	
 	private void setupListeners(){
@@ -102,14 +92,14 @@ public class UserPreferencesPanel extends JPanel {
 			if(typedInName.contains("=")){
 				typedInName = typedInName.replaceAll("=", ""); // If they type in ':', They will cause a parsing error on the next startup.
 			}
-			if(typedInName.length() > 20){
-				typedInName = typedInName.substring(0, 20);
+			if(typedInName.length() > 30){
+				typedInName = typedInName.substring(0, 30);
 			}
 			this.nameField.setText(typedInName);
 			
 			dataController.getMessengerController().getClientUser().setUserName(typedInName);
 			dataController.setUserName(typedInName);
-			dataController.saveData(true);
+			dataController.saveData();
 			
 			this.nameLabel.requestFocusInWindow(); // Makes Text field un-focused
 		}
@@ -126,11 +116,5 @@ public class UserPreferencesPanel extends JPanel {
 	public JTextField getNameField(){
 		return nameField;
 	}
-	
-	public UserImageSelector getUserImageSelector(){
-		return userImageSelector;
-	}
-	
-	
 }
 

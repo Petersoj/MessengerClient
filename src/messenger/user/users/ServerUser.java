@@ -13,7 +13,7 @@ public class ServerUser extends User {
 		this.userID = userID;
 		super.setUserName("Server User");
 		super.setUserColor(MessengerColor.BLUE);
-		super.setUserImage(messengerController.getDataController().getUserIcon());
+		//super.setUserImage(messengerController.getDataController().getUserIcon());
 	}
 	
 	public int getUserID() {

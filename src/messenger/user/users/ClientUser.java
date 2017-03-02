@@ -18,7 +18,7 @@ public class ClientUser extends User {
 		DataController dataController = messengerController.getDataController();
 		super.setUserName(dataController.getUserName());
 		super.setUserColor(dataController.getUserColor());
-		super.setUserImage(dataController.getUserIcon());
+		//super.setUserImage(dataController.getUserIcon());
 
 		this.serverUsers = new ArrayList<ServerUser>();
 	}

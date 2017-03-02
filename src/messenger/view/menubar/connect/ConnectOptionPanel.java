@@ -137,7 +137,7 @@ public class ConnectOptionPanel extends JPanel {
 			this.ipAddressField.setText(typedInIP);
 			
 			dataController.setIPAddress(typedInIP);
-			dataController.saveData(true);
+			dataController.saveData();
 			
 			this.ipAddressLabel.requestFocusInWindow(); // Makes Text field un-focused
 		}
@@ -155,7 +155,7 @@ public class ConnectOptionPanel extends JPanel {
 		if(portNumber != dataController.getPort()){
 			if(portNumber > 25 || portNumber < 65535){
 				dataController.setPort(portNumber);
-				dataController.saveData(true);
+				dataController.saveData();
 				this.ipAddressLabel.requestFocusInWindow(); // Makes Text field un-focused
 			}
 		}

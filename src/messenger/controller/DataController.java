@@ -28,7 +28,6 @@ public class DataController {
 	private int port;
 	private String userName;
 	private MessengerColor userColor;
-	private BufferedImage userIcon;
 	
 	private Font verdanaFont;
 	private BufferedImage messengerIcon;
@@ -88,7 +87,6 @@ public class DataController {
 					this.userColor = MessengerColor.valueOf(value);
 				}
 			}
-			this.userIcon = ImageIO.read(new File(dataFilePath + "/userIcon.png"));
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Parsing Data", e);
@@ -113,16 +111,12 @@ public class DataController {
 		this.verdanaFont = new Font("Verdana", Font.PLAIN, 15);
 	}
 	
-	public void saveData(boolean saveText){
+	public void saveData(){
 		try{
-			if(saveText){
-				FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
-				String data = "ip=" + this.ipAddress + ",port=" + String.valueOf(this.port) + ",name=" + this.userName + ",color=" + this.userColor.toString();
-				fileWriter.write(data);
-				fileWriter.close();
-			}else{
-				ImageIO.write(this.userIcon, "png", new File(dataFilePath + "/userIcon.png"));
-			}
+			FileWriter fileWriter = new FileWriter(dataFilePath + "/textData.txt", false);
+			String data = "ip=" + this.ipAddress + ",port=" + String.valueOf(this.port) + ",name=" + this.userName + ",color=" + this.userColor.toString();
+			fileWriter.write(data);
+			fileWriter.close();
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Load Assets", e);
@@ -132,7 +126,6 @@ public class DataController {
 	public void copyDefaultsToDataDirectory(){
 		try{
 			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/textData.txt"), Paths.get(dataFilePath + "/textData.txt"), StandardCopyOption.REPLACE_EXISTING);
-			Files.copy(this.getClass().getResourceAsStream("/messenger/assets/userIcon.png"), Paths.get(dataFilePath + "/userIcon.png"), StandardCopyOption.REPLACE_EXISTING);
 		}catch(Exception e) {
 			this.errorOccured = true;
 			messengerController.getDebug().presentError("Copying Defaults", e);
@@ -196,15 +189,7 @@ public class DataController {
 	public void setUserColor(MessengerColor userColor) {
 		this.userColor = userColor;
 	}
-
-	public BufferedImage getUserIcon() {
-		return userIcon;
-	}
-
-	public void setUserIcon(BufferedImage userIcon) {
-		this.userIcon = userIcon;
-	}
-
+	
 	public Font getVerdanaFont() {
 		return verdanaFont;
 	}
