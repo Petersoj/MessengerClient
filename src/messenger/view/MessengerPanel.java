@@ -37,6 +37,7 @@ public class MessengerPanel extends JPanel {
 	private void setupComponents(){
 		this.messagesScrollPane.getVerticalScrollBar().setUI(new ScrollBarUI());
 		this.messagesScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.messagesScrollPane.getVerticalScrollBar().setUnitIncrement(25); // Increment in pixels that the thumb will move.
 		this.messagesScrollPane.setBorder(BorderFactory.createEmptyBorder());
 	}
 	

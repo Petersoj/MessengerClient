@@ -1,4 +1,4 @@
-package messenger.view.messagepanel.messagepanels;
+package messenger.view.messagepanel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,33 +15,49 @@ import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
 import messenger.controller.DataController;
-import messenger.user.User;
-import messenger.user.users.ClientUser;
 import messenger.util.MessengerColor;
 import messenger.util.Utils;
-import messenger.view.messagepanel.MessagesPanel;
 
 public class MessagePanel extends JPanel {
 	
 	private MessagesPanel messagesPanel;
 	
-	private User user;
 	private Dimension preferredSize;
 	private SpringLayout springLayout;
+	
+	private boolean clientUser;
+	private MessengerColor userColor;
+	private boolean isUserMessage;
+	
 	private JLabel nameLabel;
 	private JTextArea messageArea;
 	
-	public MessagePanel(MessagesPanel messagesPanel, User user, String message){
+	public MessagePanel(MessagesPanel messagesPanel, String userName, MessengerColor userColor, String message, boolean clientUser){
 		this.messagesPanel = messagesPanel;
-		
-		if(user != null){
-			this.user = user;
-			this.nameLabel = new JLabel(user.getUserName());
-		}
-		this.messageArea = new JTextArea(message);
+
+		this.preferredSize = new Dimension(0, 0);
 		this.springLayout = new SpringLayout();
 		
+		this.clientUser = clientUser;
+		this.userColor = userColor;
+		this.isUserMessage = true;
+		
+		this.nameLabel = new JLabel(userName);
+		this.messageArea = new JTextArea(message);
+		
+		this.setupComponents();
+		this.setupPanel();
+		this.setupLayout();
+	}
+	
+	public MessagePanel(MessagesPanel messagesPanel, String systemMessage){
+		this.messagesPanel = messagesPanel;
+
 		this.preferredSize = new Dimension(0, 0);
+		this.springLayout = new SpringLayout();
+		this.isUserMessage = false;
+		
+		this.messageArea = new JTextArea(systemMessage);
 		
 		this.setupComponents();
 		this.setupPanel();
@@ -52,10 +67,7 @@ public class MessagePanel extends JPanel {
 	private void setupComponents(){
 		DataController dataController = this.messagesPanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		
-		if(user == null){
-			this.messageArea.setForeground(Color.GRAY);
-			this.messageArea.setFont(dataController.getVerdanaFont().deriveFont(13f));
-		}else{
+		if(isUserMessage){
 			this.nameLabel.setFont(dataController.getVerdanaFont().deriveFont(13f));
 			
 			this.messageArea.setOpaque(false);
@@ -63,13 +75,19 @@ public class MessagePanel extends JPanel {
 			this.messageArea.setLineWrap(true);
 			this.messageArea.setWrapStyleWord(true);
 			this.messageArea.setFont(dataController.getVerdanaFont());
+		}else{
+			this.messageArea.setOpaque(false);
+			this.messageArea.setEditable(false);
+			this.messageArea.setForeground(Color.GRAY);
+			this.messageArea.setFont(dataController.getVerdanaFont().deriveFont(13f));
 		}
 	}
 	
 	private void setupPanel(){
+		this.setLayout(springLayout);
+		
 		this.addComponentListener(new ComponentListener() {
 			public void componentShown(ComponentEvent e) {}
-			
 			@Override
 			public void componentResized(ComponentEvent e) {
 				updateSizing();
@@ -79,13 +97,12 @@ public class MessagePanel extends JPanel {
 				 So when the screen is resized, some messages may go off the screen
 				 */
 			}
-			
 			public void componentMoved(ComponentEvent e) {}
 			public void componentHidden(ComponentEvent e) {}
 		});
 		
-		this.setLayout(springLayout);
-		if(user != null){
+		
+		if(isUserMessage){
 			this.add(nameLabel);
 		}
 		this.add(messageArea);
@@ -93,22 +110,19 @@ public class MessagePanel extends JPanel {
 	}
 	
 	private void setupLayout(){
-		if(user != null){ //  Name Label constraints
+		if(isUserMessage){ //  Name Label constraints
 			springLayout.putConstraint(SpringLayout.NORTH, nameLabel, 5, SpringLayout.NORTH, this);
-			if(user instanceof ClientUser) {
-				springLayout.putConstraint(SpringLayout.EAST, nameLabel, -65, SpringLayout.EAST, this);
+			if(clientUser) {
+				springLayout.putConstraint(SpringLayout.EAST, nameLabel, -10, SpringLayout.EAST, this);
 			}else{
-				springLayout.putConstraint(SpringLayout.WEST, nameLabel, 65, SpringLayout.WEST, this);
+				springLayout.putConstraint(SpringLayout.WEST, nameLabel, 10, SpringLayout.WEST, this);
 			}
 		}
 		
-		if(user == null){ // center text area if user is null aka small system message
-			springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, messageArea, 0, SpringLayout.VERTICAL_CENTER, this);
-			springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, messageArea, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		}else{ // text area constraints
+		if(isUserMessage){ // text area constraints
 			int stringWidth = messageArea.getFontMetrics(messageArea.getFont()).stringWidth(messageArea.getText());
 			springLayout.putConstraint(SpringLayout.NORTH, messageArea, 10, SpringLayout.SOUTH, nameLabel);
-			if(user instanceof ClientUser){
+			if(clientUser){
 				springLayout.putConstraint(SpringLayout.EAST, messageArea, -5, SpringLayout.EAST, nameLabel);
 				if(stringWidth + 150 < messagesPanel.getWidth()){
 					springLayout.putConstraint(SpringLayout.WEST, messageArea, -stringWidth, SpringLayout.EAST, messageArea);
@@ -123,15 +137,18 @@ public class MessagePanel extends JPanel {
 					springLayout.putConstraint(SpringLayout.EAST, messageArea, -50, SpringLayout.EAST, this);
 				}
 			}
+		}else{ // small system message
+			springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, messageArea, 0, SpringLayout.VERTICAL_CENTER, this);
+			springLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, messageArea, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		}
 		updateSizing();
 	}
 	
 	public void updateSizing(){
-		if(user == null){
-			this.preferredSize.setSize(1, 25 + this.messageArea.getPreferredSize().getHeight());
-		}else{
+		if(isUserMessage){
 			this.preferredSize.setSize(1, this.nameLabel.getPreferredSize().getHeight() + 35 + this.messageArea.getPreferredSize().getHeight());
+		}else{
+			this.preferredSize.setSize(1, 25 + this.messageArea.getPreferredSize().getHeight());
 		}
 	}
 	
@@ -139,28 +156,13 @@ public class MessagePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		if(user != null){
-			
+		if(isUserMessage && userColor != null){
 			Graphics2D g2 = Utils.getChangedGraphics2D(g);
-			
-			BufferedImage image = Utils.drawRoundedSquareImage(user.getUserImage(), 50);
-			if(user instanceof ClientUser){
-				g2.drawImage(image,  this.getWidth() - 55, nameLabel.getHeight(), this.getWidth() - 5, nameLabel.getHeight() + 50,
-						0, 0, image.getWidth(), image.getHeight(), null);
-			}else{
-				g2.drawImage(image, 5, nameLabel.getHeight(), 55, nameLabel.getHeight() + 50, 0, 0, image.getWidth(), image.getHeight(), null);
-			}
-			
 			Rectangle messageBounds = messageArea.getBounds();
 			
-			if(user == null){
-				g2.setColor(MessengerColor.GREEN.getColor());
-			}else{
-				g2.setColor(user.getUserColor().getColor());
-			}
+			g2.setColor(userColor.getColor());
 			g2.fill(new RoundRectangle2D.Double(messageBounds.getX() - 7, messageBounds.getY() - 7, 
 					messageBounds.getWidth() + 14, messageBounds.getHeight() + 14, 20, 20));
-			
 		}
 		updateSizing();
 	}

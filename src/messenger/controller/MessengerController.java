@@ -2,7 +2,7 @@ package messenger.controller;
 
 import javax.swing.SwingUtilities;
 
-import messenger.user.users.ClientUser;
+import messenger.user.ClientUser;
 import messenger.view.MessengerFrame;
 
 public class MessengerController {

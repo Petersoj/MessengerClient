@@ -97,7 +97,6 @@ public class UserPreferencesPanel extends JPanel {
 			}
 			this.nameField.setText(typedInName);
 			
-			dataController.getMessengerController().getClientUser().setUserName(typedInName);
 			dataController.setUserName(typedInName);
 			dataController.saveData();
 			

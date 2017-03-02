@@ -10,8 +10,6 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import messenger.view.MessengerPanel;
-import messenger.view.messagepanel.messagepanels.FilePanel;
-import messenger.view.messagepanel.messagepanels.MessagePanel;
 
 public class MessagesPanel extends JPanel {
 	
@@ -34,7 +32,6 @@ public class MessagesPanel extends JPanel {
 			public void componentResized(ComponentEvent e) {
 				JScrollBar scrollBar = messengerPanel.getMessagesScrollPane().getVerticalScrollBar();
 				scrollBar.setValue(scrollBar.getMaximum());
-				scrollBar.setUnitIncrement(scrollBar.getMaximum() / 30);
 			}
 			
 			@Override
@@ -55,14 +52,7 @@ public class MessagesPanel extends JPanel {
 		scrollPane.setViewportView(this);
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
-	
-	public void addFileMessage(FilePanel filePanel){
-		this.add(filePanel);
-		JScrollPane scrollPane = this.messengerPanel.getMessagesScrollPane();
-		scrollPane.setViewportView(this);
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-	}
-	
+
 	public MessengerPanel getMessengerPanel() {
 		return messengerPanel;
 	}

@@ -10,11 +10,8 @@ import javax.swing.SpringLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import messenger.packet.packets.PacketMessage;
-import messenger.packet.packets.PacketMessage.PacketMessageType;
-import messenger.user.users.ServerUser;
-import messenger.view.messagepanel.messagepanels.FilePanel;
-import messenger.view.messagepanel.messagepanels.MessagePanel;
+import messenger.util.MessengerColor;
+import messenger.view.messagepanel.MessagePanel;
 
 public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
 	
@@ -78,29 +75,11 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			e.consume();
-			if(this.getText().equals("file")){
-				this.typePanel.getMessengerPanel().getMessagesPanel().addFileMessage(new FilePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						new ServerUser(this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController(), 12), "asdf.jpg"));
-				this.setText("");
-			}else if(this.getText().equals("filec")){
-				this.typePanel.getMessengerPanel().getMessagesPanel().addFileMessage(new FilePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), "asdf.jpg"));
-				this.setText("");
-			}else{
-				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
-				/*
-				 * MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(),
-						this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser(), this.getText());
-				 */
-				
-				PacketMessage packetMessage = new PacketMessage(PacketMessageType.MESSAGE);
-				packetMessage.setMessage(this.getText());
-				this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().getClientUserConnection().sendPacket(packetMessage);
-				
-				this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
-				this.setText("");
-			}
+			
+			MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(), "taco", MessengerColor.BLUE, this.getText(), false);
+			this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
+			
+			this.setText("");
 		}
 	}
 	

@@ -10,11 +10,6 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Utils {
 	
@@ -26,22 +21,7 @@ public class Utils {
 	    g2.dispose();
 	    return resizedImage;
 	}
-	
-	public static byte[] bufferedImageToBytes(BufferedImage bufferedImage, String formatName) throws IOException{
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(8000); // creates a buffer of 8 kilobytes.
-		byte[] bytes = null;
-		ImageIO.write(bufferedImage, formatName, outputStream);
-		outputStream.flush(); // Gets rid of bytes that weren't filled in the buffer
-		bytes = outputStream.toByteArray();
-		outputStream.close();
-		return bytes;
-	}
-	
-	public static BufferedImage bytesToBufferedImage(byte[] imageBytes) throws IOException {
-		ByteArrayInputStream byteInputStream = new ByteArrayInputStream(imageBytes);
-		return ImageIO.read(byteInputStream);
-	}
-	
+
 	public static void drawCenteredText(Graphics2D g2, String text, int width, int height){
 		FontMetrics fontMetrics = g2.getFontMetrics();
 		int x = (width - fontMetrics.stringWidth(text)) / 2;

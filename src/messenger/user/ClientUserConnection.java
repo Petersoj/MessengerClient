@@ -6,15 +6,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import messenger.controller.DataController;
-import messenger.packet.Packet;
-import messenger.packet.Packet.PacketType;
 import messenger.packet.PacketHandler;
-import messenger.packet.packets.PacketFile;
-import messenger.packet.packets.PacketMessage;
-import messenger.packet.packets.PacketUser;
-import messenger.packet.packets.PacketUser.PacketUserType;
-import messenger.user.users.ClientUser;
-import messenger.util.Utils;
+import messenger.packet.PacketMessage;
 
 public class ClientUserConnection extends Thread {
 	
@@ -44,55 +37,27 @@ public class ClientUserConnection extends Thread {
 		}
 		
 		if(socket != null && !socket.isClosed() && socket.isConnected()){
-			PacketUser userNamePacket = new PacketUser(PacketUserType.USERNAME);
-			userNamePacket.setUserName(clientUser.getUserName());
-			
-			PacketUser userColorPacket = new PacketUser(PacketUserType.COLOR);
-			userColorPacket.setUserColor(clientUser.getUserColor());
-			
-			PacketUser userImagePacket = new PacketUser(PacketUserType.IMAGE_ICON);
-			userImagePacket.setUserImage(Utils.getNewResizedImage(clientUser.getUserImage(), 50, 50)); // The client will only render images at 50x50
-			
-			// !!! Order is Important !!!
-			this.sendPacket(userNamePacket);
-			this.sendPacket(userColorPacket);
-			this.sendPacket(userImagePacket);
+			PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), "bonjour");
+			try {
+				packetMessage.writeContent(dataOutputStream); // send our initial data to the server.
+			}catch(Exception e) {
+				clientUser.getMessengerController().getDebug().presentError("Giving Info", e);
+			}
 		}
 		
 		while(socket != null && !socket.isClosed() && socket.isConnected()){
 			try{
-				PacketType packetType = PacketType.valueOf(dataInputStream.readUTF()); // The PacketType is always sent first
-				switch(packetType){
-					case MESSAGE:
-						PacketMessage packetMessage = new PacketMessage();
-						packetMessage.readContent(dataInputStream);
-						packetHandler.handlePacketMessage(packetMessage);
-						break;
-					case FILE:
-						PacketFile packetFile = new PacketFile();
-						packetFile.readContent(dataInputStream);
-						packetHandler.handlePacketFile(packetFile);
-						break;
-					case USER:
-						PacketUser packetUser = new PacketUser();
-						packetUser.readContent(dataInputStream);
-						packetHandler.handlePacketUser(packetUser);
-						break;
-				}
+				
+				PacketMessage packetMessage = new PacketMessage(); // create new black Packet message
+				packetMessage.readContent(dataInputStream); // read input stream, but also block till recieving data
+				packetHandler.handlePacketMessage(packetMessage);
+				
 			}catch(Exception e){
 				clientUser.getMessengerController().getDebug().presentError("Reading inside while", e);
 				this.close();
 			}
 		}
 		this.close();
-	}
-	
-	public void sendPacket(Packet packet){
-		try{
-			packet.writeContent(dataOutputStream);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 	}
 	
 	public void close(){

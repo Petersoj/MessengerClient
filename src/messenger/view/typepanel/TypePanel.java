@@ -59,10 +59,7 @@ public class TypePanel extends JPanel {
 		
 		Graphics2D g2 = Utils.getChangedGraphics2D(g);
 		
-		this.drawTypePanelBackground(g2);
-	}
-	
-	private void drawTypePanelBackground(Graphics2D g2){
+		// Draw the round text area.
 		RoundRectangle2D textArea = new RoundRectangle2D.Float(10, 10, typeArea.getWidth() + 15, typeArea.getHeight() + 10, 26, 26);
 		
 		g2.setColor(typeAreaColor);

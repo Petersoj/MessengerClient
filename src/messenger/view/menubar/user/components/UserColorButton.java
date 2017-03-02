@@ -82,7 +82,6 @@ public class UserColorButton extends JButton implements ActionListener {
 				.getMessengerFrame().getMessengerController().getDataController();
 		if((currentTime - this.userColorPanel.getLastColorSave()) > 1000 && dataController.getUserColor() != userColor){ // This prevents spamming of the button :(
 			dataController.setUserColor(userColor);
-			dataController.getMessengerController().getClientUser().setUserColor(userColor);
 			
 			this.userColorPanel.getUserPreferencesPanel().getUserPreferencesDialog().getMessengerPanel().getTypePanel().getTypeArea().setCaretColor(userColor.getColor());
 			this.userColorPanel.getUserPreferencesPanel().getNameField().setCaretColor(userColor.getColor());
