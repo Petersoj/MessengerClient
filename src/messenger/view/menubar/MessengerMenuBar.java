@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import messenger.controller.DataController;
+import messenger.user.ClientUser;
 import messenger.view.MessengerFrame;
 import messenger.view.menubar.about.AboutDialog;
 import messenger.view.menubar.connect.ConnectOptionDialog;
@@ -91,8 +92,16 @@ public class MessengerMenuBar extends JMenuBar {
 	private void setupListeners(){
 		 // Lamda expressions :D
 		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
-		this.connectItem.addActionListener((e) -> { 
-			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
+		this.connectItem.addActionListener((e) -> {
+			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
+			if(clientUser.getClientUserConnection() != null && clientUser.getClientUserConnection().isConnected()){
+				clientUser.getClientUserConnection().close();
+				connectOptionDialog.getMessengerPanel().getMessagesPanel().clearAllMessages();
+				toggleConnectMenuText();
+			}else{
+				connectOptionDialog.getMessengerPanel().getMessagesPanel().clearAllMessages();
+				connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
+			}
 		});
 		this.userPreferencesItem.addActionListener((e) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
 		this.aboutItem.addActionListener((e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });

@@ -54,15 +54,13 @@ public class DataController {
 		try{
 			Files.createDirectory(Paths.get(dataFilePath));
 			this.copyDefaultsToDataDirectory();
-		}catch(Exception e) {
-			if(e instanceof FileAlreadyExistsException){ // File already exists
-				if(!(new File(dataFilePath + "/textData.txt").exists())){ // textData does not exist
-					this.copyDefaultsToDataDirectory();
-				}
-			}else{
-				this.errorOccured = true;
-				messengerController.getDebug().presentError("Setting up Data Folder", e);
+		}catch(FileAlreadyExistsException file){ // file already exists
+			if(!(new File(dataFilePath + "/textData.txt").exists())){ // textData does not exist
+				this.copyDefaultsToDataDirectory();
 			}
+		}catch(Exception e) {
+			this.errorOccured = true;
+			messengerController.getDebug().presentError("Setting up Data Folder", e);
 		}
 	}
 	
