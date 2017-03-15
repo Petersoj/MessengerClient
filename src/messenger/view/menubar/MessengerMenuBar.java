@@ -8,7 +8,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import messenger.controller.DataController;
-import messenger.user.ClientUser;
 import messenger.view.MessengerFrame;
 import messenger.view.menubar.about.AboutDialog;
 import messenger.view.menubar.connect.ConnectOptionDialog;
@@ -28,6 +27,7 @@ public class MessengerMenuBar extends JMenuBar {
 
 	private JMenuItem connectOptionItem;
 	private JMenuItem connectItem;
+	private JMenuItem serverItem;
 	
 	private JMenuItem userPreferencesItem;
 	
@@ -49,7 +49,8 @@ public class MessengerMenuBar extends JMenuBar {
 		this.aboutMenu = new JMenu("About");
 		
 		this.connectOptionItem = new JMenuItem("Connect Options");
-		this.connectItem = new JMenuItem("Connect");
+		this.connectItem = new JMenuItem("Connect to a Server");
+		this.serverItem = new JMenuItem("Start a Server");
 		
 		this.userPreferencesItem = new JMenuItem("User Preferences");
 		
@@ -68,6 +69,7 @@ public class MessengerMenuBar extends JMenuBar {
 		connectMenu.add(connectOptionItem);
 		connectMenu.addSeparator();
 		connectMenu.add(connectItem);
+		connectMenu.add(serverItem);
 		
 		userMenu.add(userPreferencesItem);
 		
@@ -93,15 +95,10 @@ public class MessengerMenuBar extends JMenuBar {
 		 // Lamda expressions :D
 		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
 		this.connectItem.addActionListener((e) -> {
-			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
-			if(clientUser.getClientUserConnection() != null && clientUser.getClientUserConnection().isConnected()){
-				clientUser.getClientUserConnection().close();
-				connectOptionDialog.getMessengerPanel().getMessagesPanel().clearAllMessages();
-				toggleConnectMenuText();
-			}else{
-				connectOptionDialog.getMessengerPanel().getMessagesPanel().clearAllMessages();
-				connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
-			}
+			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
+		});
+		this.serverItem.addActionListener((e) -> {
+			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().startServer();
 		});
 		this.userPreferencesItem.addActionListener((e) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
 		this.aboutItem.addActionListener((e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
@@ -122,10 +119,18 @@ public class MessengerMenuBar extends JMenuBar {
 	}
 	
 	public void toggleConnectMenuText(){
-		if(connectItem.getText().equals("Connect")){
-			connectItem.setText("Disconnect");
+		if(connectItem.getText().equals("Connect to a Server")){
+			connectItem.setText("Disonnect from a Server");
 		}else{
-			connectItem.setText("Connect");
+			connectItem.setText("Connect to a Server");
+		}
+	}
+	
+	public void toggleServerMenuText(){
+		if(serverItem.getText().equals("Start a Server")){
+			connectItem.setText("Stop the Server");
+		}else{
+			connectItem.setText("Start a Server");
 		}
 	}
 	

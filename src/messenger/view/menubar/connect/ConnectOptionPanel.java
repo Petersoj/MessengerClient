@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,7 +23,6 @@ public class ConnectOptionPanel extends JPanel {
 	private JLabel portLabel;
 	private JTextField ipAddressField;
 	private JTextField portField;
-	private JButton connectButton;
 	
 	public ConnectOptionPanel(ConnectOptionDialog connectOptionDialog){
 		super();
@@ -35,7 +33,6 @@ public class ConnectOptionPanel extends JPanel {
 		this.portLabel = new JLabel("Port:");
 		this.ipAddressField = new JTextField();
 		this.portField = new JTextField();
-		this.connectButton = new JButton("Connect");
 		
 		this.setupComponents();
 		this.setupPanel();
@@ -58,8 +55,6 @@ public class ConnectOptionPanel extends JPanel {
 		this.portField.setCaretColor(color);
 		this.ipAddressField.setText(dataController.getIPAddress());
 		this.portField.setText(String.valueOf(dataController.getPort()));
-		
-		this.connectButton.setFont(verdanaFont);
 	}
 	
 	private void setupPanel(){
@@ -68,7 +63,6 @@ public class ConnectOptionPanel extends JPanel {
 		this.add(ipAddressField);
 		this.add(portLabel);
 		this.add(portField);
-		this.add(connectButton);
 	}
 	
 	private void setupLayout(){
@@ -85,9 +79,6 @@ public class ConnectOptionPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.VERTICAL_CENTER, portField, 0, SpringLayout.VERTICAL_CENTER, portLabel);
 		springLayout.putConstraint(SpringLayout.WEST, portField, 0, SpringLayout.WEST, ipAddressField);
 		springLayout.putConstraint(SpringLayout.EAST, portField, -160, SpringLayout.EAST, this);
-		
-		springLayout.putConstraint(SpringLayout.EAST, connectButton, 0, SpringLayout.EAST, ipAddressField);
-		springLayout.putConstraint(SpringLayout.NORTH, connectButton, 10, SpringLayout.SOUTH, portField);
 	}
 	
 	private void setupListeners(){
@@ -113,11 +104,6 @@ public class ConnectOptionPanel extends JPanel {
 			}
 			@Override
 			public void focusGained(FocusEvent e) { } // unused
-		});
-		
-		this.connectButton.addActionListener((e) -> {
-			connectOptionDialog.dispose();
-			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
 		});
 	}
 	

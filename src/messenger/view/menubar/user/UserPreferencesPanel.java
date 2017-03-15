@@ -95,6 +95,9 @@ public class UserPreferencesPanel extends JPanel {
 			if(typedInName.length() > 30){
 				typedInName = typedInName.substring(0, 30);
 			}
+			if(typedInName.length() == 0){
+				typedInName = "Default Name";
+			}
 			this.nameField.setText(typedInName);
 			
 			dataController.setUserName(typedInName);

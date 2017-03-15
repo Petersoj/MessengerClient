@@ -18,7 +18,6 @@ public class TypePanel extends JPanel {
 	private SpringLayout springLayout;
 	
 	private TypeArea typeArea;
-	private AttachmentButton attachmentButton;
 	
 	private Color typeAreaColor;
 	
@@ -29,7 +28,6 @@ public class TypePanel extends JPanel {
 		this.springLayout = new SpringLayout();
 		
 		this.typeArea = new TypeArea(this);
-		this.attachmentButton = new AttachmentButton(this);
 		
 		this.setupPanel();
 		this.setupLayout();
@@ -38,19 +36,13 @@ public class TypePanel extends JPanel {
 	private void setupPanel(){
 		this.setLayout(springLayout);
 		this.add(typeArea);
-		this.add(attachmentButton);
 		this.setBackground(Color.WHITE);
 	}
 	
 	private void setupLayout(){
 		springLayout.putConstraint(SpringLayout.NORTH, typeArea, 16, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, typeArea, -50, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.EAST, typeArea, -18, SpringLayout.EAST, this);
 		springLayout.putConstraint(SpringLayout.WEST, typeArea, 18, SpringLayout.WEST, this);
-		
-		springLayout.putConstraint(SpringLayout.NORTH, attachmentButton, 10, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, attachmentButton, -10, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, attachmentButton, -7, SpringLayout.EAST, this);
-		springLayout.putConstraint(SpringLayout.WEST, attachmentButton, -37, SpringLayout.EAST, this);
 	}
 	
 	@Override
@@ -69,28 +61,11 @@ public class TypePanel extends JPanel {
 		g2.draw(textArea);
 	}
 	
-	public void setAttachmentButtonShown(boolean show){
-		if(show){
-			this.add(attachmentButton);
-			this.setupLayout(); // Will reset constraints for button and text Area
-		}else{ // hide attachmentButton
-			this.remove(attachmentButton);
-			springLayout.removeLayoutComponent(attachmentButton);
-			springLayout.putConstraint(SpringLayout.EAST, typeArea, -15, SpringLayout.EAST, this);
-		}
-		this.revalidate();
-		this.repaint();
-	}
-	
 	public MessengerPanel getMessengerPanel() {
 		return messengerPanel;
 	}
 	
 	public TypeArea getTypeArea(){
 		return typeArea;
-	}
-	
-	public AttachmentButton getAttachmentButton(){
-		return attachmentButton;
 	}
 }

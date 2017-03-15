@@ -4,11 +4,11 @@ import messenger.controller.MessengerController;
 import messenger.view.messagepanel.MessagePanel;
 import messenger.view.messagepanel.MessagesPanel;
 
-public class PacketHandler {
+public class PacketClientHandler {
 	
 	private MessengerController messengerController;
 	
-	public PacketHandler(MessengerController messengerController){
+	public PacketClientHandler(MessengerController messengerController){
 		this.messengerController = messengerController;
 	}
 	
@@ -28,7 +28,7 @@ public class PacketHandler {
 		}
 		messagesPanel.addMessage(messagePanel);
 	}
-	
+
 	public MessengerController getMessengerController() {
 		return messengerController;
 	}

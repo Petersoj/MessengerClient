@@ -10,7 +10,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import messenger.controller.DataController;
-import messenger.packet.PacketHandler;
+import messenger.packet.PacketClientHandler;
 import messenger.packet.PacketMessage;
 import messenger.view.messagepanel.MessagePanel;
 import messenger.view.messagepanel.MessagesPanel;
@@ -19,14 +19,14 @@ public class ClientUserConnection extends Thread {
 	
 	private ClientUser clientUser;
 	
-	private PacketHandler packetHandler;
+	private PacketClientHandler packetHandler;
 	private Socket socket;
 	private DataInputStream dataInputStream;
 	private DataOutputStream dataOutputStream;
 	
 	public ClientUserConnection(ClientUser clientUser){
 		this.clientUser = clientUser;
-		this.packetHandler = new PacketHandler(clientUser.getMessengerController());
+		this.packetHandler = new PacketClientHandler(clientUser.getMessengerController());
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class ClientUserConnection extends Thread {
 			}catch(EOFException e){
 				MessagesPanel messagesPanel = clientUser.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel();
 				messagesPanel.clearAllMessages();
-				MessagePanel eofMessage = new MessagePanel(messagesPanel, "There server closed the connection.");
+				MessagePanel eofMessage = new MessagePanel(messagesPanel, "The server closed the connection.");
 				messagesPanel.addMessage(eofMessage);
 				this.close();
 			}catch(Exception e){

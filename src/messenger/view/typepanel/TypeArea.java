@@ -7,25 +7,21 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import messenger.controller.DataController;
 import messenger.packet.PacketMessage;
-import messenger.user.ClientUserConnection;
+import messenger.user.ClientUser;
 import messenger.view.messagepanel.MessagePanel;
 
-public class TypeArea extends JTextArea implements DocumentListener, ComponentListener, KeyListener {
+public class TypeArea extends JTextArea implements ComponentListener, KeyListener {
 	
 	private TypePanel typePanel;
 	
-	private boolean attachmentButtonShown;
 	private long messageTimer;
 	
 	public TypeArea(TypePanel typePanel){
 		super();
 		this.typePanel = typePanel;
-		this.attachmentButtonShown = true;
 		this.messageTimer = System.currentTimeMillis();
 		
 		this.setupComponent();
@@ -37,27 +33,11 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 		this.setWrapStyleWord(true);
 		
 		this.addComponentListener(this);
-		this.getDocument().addDocumentListener(this);
 		this.addKeyListener(this);
 		
 		this.setFont(typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController().getVerdanaFont());
 		
 		this.setCaretColor(typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController().getUserColor().getColor());
-	}
-	
-	@Override
-	public void insertUpdate(DocumentEvent e) {
-		this.updateAttachmentButtonVisiblity();
-	}
-
-	@Override
-	public void removeUpdate(DocumentEvent e) {
-		this.updateAttachmentButtonVisiblity();
-	}
-
-	@Override
-	public void changedUpdate(DocumentEvent e) {
-		this.updateAttachmentButtonVisiblity();
 	}
 	
 	@Override
@@ -84,18 +64,25 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 			if(System.currentTimeMillis() - messageTimer > 300 && !this.getText().equals("")){ // Only let the client send message 300 ms apart
 				
 				DataController dataController = this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
+				
+				// message cannot equal "bonjour!"
+				if(this.getText().equals("bonjour!")){
+					this.setText("");
+					return;
+				}
 
 				MessagePanel messagePanel = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(), 
 						dataController.getUserName(), dataController.getUserColor(), this.getText(), true);
 				this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(messagePanel);
 				
+				ClientUser clientUser = this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
 				
-				ClientUserConnection clientUserConnection = this.typePanel.getMessengerPanel().getMessengerFrame().getMessengerController()
-						.getClientUser().getClientUserConnection();
-				
-				if(clientUserConnection != null && clientUserConnection.isConnected()){
+				if(clientUser.isConnectedToServer()){ // Client
 					PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), this.getText());
-					clientUserConnection.sendPacketMessage(packetMessage);
+					clientUser.getClientUserConnection().sendPacketMessage(packetMessage);
+				}else if(clientUser.isServerOpen()){ // Server
+					PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), this.getText());
+					clientUser.getMessengerServer().sendPacketMessageToClients(packetMessage);
 				}else{
 					MessagePanel notSentMessage = new MessagePanel(this.typePanel.getMessengerPanel().getMessagesPanel(), "Your message was not sent.");
 					this.typePanel.getMessengerPanel().getMessagesPanel().addMessage(notSentMessage);
@@ -111,21 +98,9 @@ public class TypeArea extends JTextArea implements DocumentListener, ComponentLi
 	@Override
 	public void keyReleased(KeyEvent e) { }
 	
-	
-	public void updateAttachmentButtonVisiblity(){
-		if(this.getText().isEmpty() && !attachmentButtonShown){
-			attachmentButtonShown = true;
-			typePanel.setAttachmentButtonShown(true);
-		}else if(attachmentButtonShown){
-			attachmentButtonShown = false;
-			typePanel.setAttachmentButtonShown(false);
-		}
-	}
-	
 	public void updateSizing(){
 		int northOffset = -(30 + this.getHeight());
 		typePanel.getMessengerPanel().getSpringLayout().putConstraint(SpringLayout.NORTH, typePanel, northOffset, SpringLayout.SOUTH, typePanel.getMessengerPanel());
 		typePanel.revalidate();
 	}
-	
 }
