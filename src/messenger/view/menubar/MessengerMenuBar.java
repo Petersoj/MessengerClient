@@ -22,7 +22,7 @@ public class MessengerMenuBar extends JMenuBar {
 	private ConnectOptionDialog connectOptionDialog;
 	
 	private JMenu connectMenu;
-	private JMenu userMenu;
+	private JMenu optionsMenu;
 	private JMenu aboutMenu;
 
 	private JMenuItem connectOptionItem;
@@ -45,7 +45,7 @@ public class MessengerMenuBar extends JMenuBar {
 		this.connectOptionDialog = new ConnectOptionDialog(messengerFrame.getMessengerPanel());
 		
 		this.connectMenu = new JMenu("Connect");
-		this.userMenu = new JMenu("User");
+		this.optionsMenu = new JMenu("Options");
 		this.aboutMenu = new JMenu("About");
 		
 		this.connectOptionItem = new JMenuItem("Connect Options");
@@ -66,12 +66,12 @@ public class MessengerMenuBar extends JMenuBar {
 	private void setupMenuBar(){
 		DataController dataController = this.messengerFrame.getMessengerController().getDataController();
 		
-		connectMenu.add(connectOptionItem);
+		connectMenu.add(serverItem);
 		connectMenu.addSeparator();
 		connectMenu.add(connectItem);
-		connectMenu.add(serverItem);
 		
-		userMenu.add(userPreferencesItem);
+		optionsMenu.add(connectOptionItem);
+		optionsMenu.add(userPreferencesItem);
 		
 		aboutItem.setIcon(dataController.getAboutIcon());
 		githubItem.setIcon(dataController.getGithubIcon());
@@ -87,12 +87,12 @@ public class MessengerMenuBar extends JMenuBar {
 		aboutMenu.add(websiteItem);
 		
 		this.add(connectMenu);
-		this.add(userMenu);
+		this.add(optionsMenu);
 		this.add(aboutMenu);
 	}
 	
 	private void setupListeners(){
-		 // Lamda expressions :D
+		// Lamda expressions :D
 		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
 		this.connectItem.addActionListener((e) -> {
 			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();

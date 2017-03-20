@@ -110,12 +110,13 @@ public class ConnectOptionPanel extends JPanel {
 	private void changeIPAddress(){
 		DataController dataController = this.connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getDataController();
 		String typedInIP = this.ipAddressField.getText();
-		if(!(typedInIP.equals(dataController.getIPAddress()))){ // Only change the username if changed at all
+		
+		if(!(typedInIP.equals(dataController.getIPAddress()))){ // Only change the IP address if changed at all
 			if(typedInIP.contains(",")){
 				typedInIP = typedInIP.replaceAll(",", ""); // If they type in ',', They will cause a parsing error on the next startup.
 			}
 			if(typedInIP.contains("=")){
-				typedInIP = typedInIP.replaceAll("=", ""); // If they type in ':', They will cause a parsing error on the next startup.
+				typedInIP = typedInIP.replaceAll("=", ""); // If they type in '=', They will cause a parsing error on the next startup.
 			}
 			if(typedInIP.length() > 100){
 				typedInIP = typedInIP.substring(0, 100);

@@ -20,10 +20,18 @@ public class PacketServerHandler {
 			MessagePanel messagePanel = new MessagePanel(messagesPanel, "\'" + packetMessage.getUserName() + "\' has joined the chat.");
 			messagesPanel.addMessage(messagePanel);
 			
-			// Send all other users to bonjoured client.
-			for(){
-				
+			clientConnection.setUsername(packetMessage.getUserName());
+			
+			for(ClientConnection client : clientConnection.getServerConnection().getClientConnections()){
+				if(client != clientConnection){
+					PacketMessage joinMessage = new PacketMessage(client.getUsername(), MessengerColor.BLUE, "server-userjoin");
+					clientConnection.sendPacketMessage(joinMessage);
+				}
 			}
+			
+			PacketMessage serverUserNameMessage = new PacketMessage(clientConnection.getServerConnection().getMessengerServer()
+					.getMessengerController().getDataController().getUserName(), MessengerColor.BLUE, "server-userjoin");
+			clientConnection.sendPacketMessage(serverUserNameMessage);
 			
 			PacketMessage sendingPacketMessage = new PacketMessage(packetMessage.getUserName(), MessengerColor.BLUE, "server-userjoin");
 			clientConnection.getServerConnection().sendPacketToClients(sendingPacketMessage, clientConnection);

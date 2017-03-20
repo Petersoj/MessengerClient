@@ -44,8 +44,9 @@ public class ServerConnection extends Thread {
 				Enumeration<InetAddress> addresses = network.getInetAddresses();
 				while(addresses.hasMoreElements()){
 					InetAddress ip = addresses.nextElement();
-					if(!ip.isLoopbackAddress()){
-						logWithMessage("You have an IP Address of: " + ip.getHostAddress());
+					String hostAddress  = ip.getHostAddress();
+					if(!ip.isLoopbackAddress() && hostAddress.length() < 20){
+						logWithMessage("You have an IP Address of: " + hostAddress);
 					}
 				}
 			}
@@ -93,6 +94,10 @@ public class ServerConnection extends Thread {
 		this.clientConnections.remove(clientConnection);
 	}
 	
+	public ArrayList<ClientConnection> getClientConnections(){
+		return clientConnections;
+	}
+	
 	public void logWithMessage(String log){
 		SwingUtilities.invokeLater(() -> {
 			MessagesPanel messagesPanel = messengerServer.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel();
@@ -102,7 +107,7 @@ public class ServerConnection extends Thread {
 	}
 	
 	public boolean isServerOpen(){
-		return serverSocket == null ? false : serverSocket.isClosed() && serverSocket.isBound();
+		return serverSocket == null ? false : !serverSocket.isClosed() && serverSocket.isBound();
 	}
 	
 	public MessengerServer getMessengerServer(){
