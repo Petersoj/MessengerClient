@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import javax.swing.SwingUtilities;
+
 import messenger.controller.DataController;
 import messenger.packet.PacketClientHandler;
 import messenger.packet.PacketMessage;
@@ -40,34 +42,40 @@ public class ClientUserConnection extends Thread {
 			this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
 		}catch(UnknownHostException e){
 			clientUser.getMessengerController().getDebug().presentError("Could not connect", "Cannot determine IP Address of host.");
+			this.close();
 		}catch(ConnectException e){
 			clientUser.getMessengerController().getDebug().presentError("Could not connect", "There was a problem connecting to the server!");
+			this.close();
 		}catch(Exception e){
 			clientUser.getMessengerController().getDebug().presentError("Socket connection", e);
+			this.close();
 		}
 		
-		if(socket != null && !socket.isClosed() && socket.isConnected()){
+		if(isConnected()){
+			
+			SwingUtilities.invokeLater(() -> {
+				clientUser.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleConnectMenuText();
+			});
 			
 			MessagesPanel messagesPanel = clientUser.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel();
 			messagesPanel.clearAllMessages();
 			MessagePanel successMessage = new MessagePanel(messagesPanel, "Successfully connected to the server.");
 			messagesPanel.addMessage(successMessage);
 			
-			clientUser.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleConnectMenuText();
-			
 			PacketMessage packetMessage = new PacketMessage(dataController.getUserName(), dataController.getUserColor(), "bonjour!");
 			try {
 				packetMessage.writeContent(dataOutputStream); // send our initial data to the server.
 			}catch(Exception e) {
 				clientUser.getMessengerController().getDebug().presentError("Giving Info", e);
+				this.close();
 			}
 		}
 
-		while(socket != null && !socket.isClosed() && socket.isConnected()){
+		while(isConnected()){
 			try{
 				
 				PacketMessage packetMessage = new PacketMessage(); // create new black Packet message
-				packetMessage.readContent(dataInputStream); // read input stream, but also block till recieving data
+				packetMessage.readContent(dataInputStream); // read input stream, but also block till receiving data
 				packetHandler.handlePacketMessage(packetMessage);
 				
 			}catch(SocketException e){
@@ -90,7 +98,7 @@ public class ClientUserConnection extends Thread {
 	}
 	
 	public boolean isConnected(){
-		return socket.isConnected() && !socket.isClosed();
+		return socket != null && !socket.isClosed() && socket.isConnected();
 	}
 	
 	public void sendPacketMessage(PacketMessage packetMessage){
@@ -106,10 +114,14 @@ public class ClientUserConnection extends Thread {
 	
 	public void close(){
 		try{
-			if(socket != null && socket.isConnected()){
+			if(isConnected()){
 				dataOutputStream.close();
 				dataInputStream.close();
 				socket.close();
+				
+				SwingUtilities.invokeLater(() -> {
+					clientUser.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleConnectMenuText();
+				});
 			}
 		}catch(Exception e){
 			clientUser.getMessengerController().getDebug().presentError("Closing Connection", e);

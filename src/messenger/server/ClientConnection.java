@@ -48,12 +48,12 @@ public class ClientConnection extends Thread {
 				packetHandler.handlePacketMessage(packetMessage);
 				
 			}catch(SocketException e){
-				this.closeConnection();
+				this.closeConnection(true);
 			}catch(EOFException e){
-				this.closeConnection();
+				this.closeConnection(true);
 			}catch(Exception e){
 				serverConnection.getMessengerServer().getMessengerController().getDebug().presentError("While loop", e);
-				this.closeConnection();
+				this.closeConnection(true);
 			}
 		}
 	}
@@ -66,7 +66,7 @@ public class ClientConnection extends Thread {
 		}
 	}
 
-	public void closeConnection(){
+	public void closeConnection(boolean remove){
 		try{
 			if(socket != null && socket.isConnected()){
 				dataInputStream.close();
@@ -83,7 +83,9 @@ public class ClientConnection extends Thread {
 			messagesPanel.addMessage(leftMessage);
 		});
 		
-		serverConnection.removeClientConnection(this);
+		if(remove){
+			serverConnection.getClientConnections().remove(this);
+		}
 		
 		PacketMessage leaveMessage = new PacketMessage(clientUsername, MessengerColor.BLUE, "server-userleave");
 		serverConnection.sendPacketToClients(leaveMessage, this);

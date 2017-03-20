@@ -32,29 +32,37 @@ public class ServerConnection extends Thread {
 			this.serverSocket = new ServerSocket(messengerServer.getMessengerController().getDataController().getPort());
 		}catch(Exception e){
 			messengerServer.getMessengerController().getDebug().presentError("Inside while", e);
+			this.stopListening();
 		}
 		
-		logWithMessage("Started listening on port " + messengerServer.getMessengerController().getDataController().getPort());
-		
-		Enumeration<NetworkInterface> networkInterfaces;
-		try {
-			networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			while(networkInterfaces.hasMoreElements()){
-				NetworkInterface network = networkInterfaces.nextElement();
-				Enumeration<InetAddress> addresses = network.getInetAddresses();
-				while(addresses.hasMoreElements()){
-					InetAddress ip = addresses.nextElement();
-					String hostAddress  = ip.getHostAddress();
-					if(!ip.isLoopbackAddress() && hostAddress.length() < 20){
-						logWithMessage("You have an IP Address of: " + hostAddress);
+		if(isServerOpen()){
+			logWithMessage("Started listening on port " + messengerServer.getMessengerController().getDataController().getPort());
+			
+			SwingUtilities.invokeLater(() -> {
+				messengerServer.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleServerMenuText();
+			});
+			
+			Enumeration<NetworkInterface> networkInterfaces;
+			try {
+				networkInterfaces = NetworkInterface.getNetworkInterfaces();
+				while(networkInterfaces.hasMoreElements()){
+					NetworkInterface network = networkInterfaces.nextElement();
+					Enumeration<InetAddress> addresses = network.getInetAddresses();
+					while(addresses.hasMoreElements()){
+						InetAddress ip = addresses.nextElement();
+						String hostAddress  = ip.getHostAddress();
+						if(!ip.isLoopbackAddress() && hostAddress.length() < 20){
+							logWithMessage("You have an IP Address of: " + hostAddress);
+						}
 					}
 				}
+			}catch(SocketException ex){
+				messengerServer.getMessengerController().getDebug().presentError("Gathering Network interfaces!", ex);
+				this.stopListening();
 			}
-		}catch(SocketException ex){
-			messengerServer.getMessengerController().getDebug().presentError("Gathering Network interfaces!", ex);
 		}
 		
-		while(this.serverSocket != null && !this.serverSocket.isClosed() && this.serverSocket.isBound()){
+		while(isServerOpen()){
 			try {
 				
 				Socket clientSocket = serverSocket.accept();
@@ -73,10 +81,17 @@ public class ServerConnection extends Thread {
 	
 	public void stopListening(){
 		try{
-			clientConnections.clear();
-			if(serverSocket != null){
+			if(isServerOpen()){
+				for(ClientConnection client : clientConnections){
+					client.closeConnection(false);
+				}
+				clientConnections.clear();
 				serverSocket.close();
 			}
+			SwingUtilities.invokeLater(() -> {
+				messengerServer.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleServerMenuText();
+			});
+			messengerServer.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel().clearAllMessages();
 		}catch(Exception e){
 			messengerServer.getMessengerController().getDebug().presentError("Closing server!", e);
 		}
@@ -88,10 +103,6 @@ public class ServerConnection extends Thread {
 				client.sendPacketMessage(packetMessage);
 			}
 		}
-	}
-	
-	public void removeClientConnection(ClientConnection clientConnection){
-		this.clientConnections.remove(clientConnection);
 	}
 	
 	public ArrayList<ClientConnection> getClientConnections(){

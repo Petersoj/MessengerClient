@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import messenger.controller.DataController;
+import messenger.user.ClientUser;
 import messenger.view.MessengerFrame;
 import messenger.view.menubar.about.AboutDialog;
 import messenger.view.menubar.connect.ConnectOptionDialog;
@@ -95,10 +96,28 @@ public class MessengerMenuBar extends JMenuBar {
 		// Lamda expressions :D
 		this.connectOptionItem.addActionListener((e) -> { connectOptionDialog.prepareDialog(); connectOptionDialog.setVisible(true); });
 		this.connectItem.addActionListener((e) -> {
-			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().connectToServer();
+			
+			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
+			
+			if(clientUser.isConnectedToServer()){ // they are client
+				clientUser.disconnectFromServer();
+			}else if(clientUser.isServerOpen()){
+				clientUser.stopServer();
+			}else{
+				clientUser.connectToServer();
+			}
 		});
 		this.serverItem.addActionListener((e) -> {
-			connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser().startServer();
+			
+			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
+			
+			if(clientUser.isConnectedToServer()){ // they are client
+				clientUser.disconnectFromServer();
+			}else if(clientUser.isServerOpen()){
+				clientUser.stopServer();
+			}else{
+				clientUser.startServer();
+			}
 		});
 		this.userPreferencesItem.addActionListener((e) -> { userPreferencesDialog.prepareDialog(); userPreferencesDialog.setVisible(true); });
 		this.aboutItem.addActionListener((e) -> { aboutDialog.prepareDialog(); aboutDialog.setVisible(true); });
@@ -120,7 +139,7 @@ public class MessengerMenuBar extends JMenuBar {
 	
 	public void toggleConnectMenuText(){
 		if(connectItem.getText().equals("Connect to a Server")){
-			connectItem.setText("Disonnect from a Server");
+			connectItem.setText("Disonnect from the Server");
 		}else{
 			connectItem.setText("Connect to a Server");
 		}
@@ -128,9 +147,9 @@ public class MessengerMenuBar extends JMenuBar {
 	
 	public void toggleServerMenuText(){
 		if(serverItem.getText().equals("Start a Server")){
-			connectItem.setText("Stop the Server");
+			serverItem.setText("Stop the Server");
 		}else{
-			connectItem.setText("Start a Server");
+			serverItem.setText("Start a Server");
 		}
 	}
 	
