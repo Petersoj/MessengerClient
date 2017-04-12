@@ -81,7 +81,7 @@ public class ClientUserConnection extends Thread {
 			}catch(SocketException e){
 				MessagesPanel messagesPanel = clientUser.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel();
 				messagesPanel.clearAllMessages();
-				MessagePanel socketMessage = new MessagePanel(messagesPanel, "There was an internal error with the connection.");
+				MessagePanel socketMessage = new MessagePanel(messagesPanel, "Socket closed.");
 				messagesPanel.addMessage(socketMessage);
 				this.close();
 			}catch(EOFException e){

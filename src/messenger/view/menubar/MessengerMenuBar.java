@@ -99,11 +99,9 @@ public class MessengerMenuBar extends JMenuBar {
 			
 			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
 			
-			if(clientUser.isConnectedToServer()){ // they are client
+			if(clientUser.isConnectedToServer()){
 				clientUser.disconnectFromServer();
-			}else if(clientUser.isServerOpen()){
-				clientUser.stopServer();
-			}else{
+			}else if(!clientUser.isServerOpen()){
 				clientUser.connectToServer();
 			}
 		});
@@ -111,11 +109,9 @@ public class MessengerMenuBar extends JMenuBar {
 			
 			ClientUser clientUser = connectOptionDialog.getMessengerPanel().getMessengerFrame().getMessengerController().getClientUser();
 			
-			if(clientUser.isConnectedToServer()){ // they are client
-				clientUser.disconnectFromServer();
-			}else if(clientUser.isServerOpen()){
+			if(clientUser.isServerOpen()){
 				clientUser.stopServer();
-			}else{
+			}else if(!clientUser.isConnectedToServer()){
 				clientUser.startServer();
 			}
 		});

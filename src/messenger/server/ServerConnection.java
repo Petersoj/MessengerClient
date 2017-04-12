@@ -87,11 +87,11 @@ public class ServerConnection extends Thread {
 				}
 				clientConnections.clear();
 				serverSocket.close();
+				SwingUtilities.invokeLater(() -> {
+					messengerServer.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel().clearAllMessages();
+					messengerServer.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleServerMenuText();
+				});
 			}
-			SwingUtilities.invokeLater(() -> {
-				messengerServer.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleServerMenuText();
-			});
-			messengerServer.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel().clearAllMessages();
 		}catch(Exception e){
 			messengerServer.getMessengerController().getDebug().presentError("Closing server!", e);
 		}
