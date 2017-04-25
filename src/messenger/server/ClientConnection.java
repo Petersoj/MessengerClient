@@ -77,15 +77,15 @@ public class ClientConnection extends Thread {
 			serverConnection.getMessengerServer().getMessengerController().getDebug().presentError("Closing connection", e);
 		}
 		
+		if(remove){
+			serverConnection.getClientConnections().remove(this);
+		}
+		
 		MessagesPanel messagesPanel = serverConnection.getMessengerServer().getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel();
 		MessagePanel leftMessage = new MessagePanel(messagesPanel, "\'" + clientUsername + "\' has left the chat.");
 		SwingUtilities.invokeLater(() -> {
 			messagesPanel.addMessage(leftMessage);
 		});
-		
-		if(remove){
-			serverConnection.getClientConnections().remove(this);
-		}
 		
 		PacketMessage leaveMessage = new PacketMessage(clientUsername, MessengerColor.BLUE, "server-userleave");
 		serverConnection.sendPacketToClients(leaveMessage, this);

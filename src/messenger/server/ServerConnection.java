@@ -85,8 +85,9 @@ public class ServerConnection extends Thread {
 				for(ClientConnection client : clientConnections){
 					client.closeConnection(false);
 				}
-				clientConnections.clear();
 				serverSocket.close();
+				clientConnections.clear();
+				
 				SwingUtilities.invokeLater(() -> {
 					messengerServer.getMessengerController().getMessengerFrame().getMessengerPanel().getMessagesPanel().clearAllMessages();
 					messengerServer.getMessengerController().getMessengerFrame().getMessengerMenuBar().toggleServerMenuText();
